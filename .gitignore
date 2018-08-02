@@ -8,12 +8,14 @@ target/
 .project
 .settings
 .springBeans
+.log
 
 ### IntelliJ IDEA ###
 .idea
 *.iws
 *.iml
 *.ipr
+*.log
 
 ### NetBeans ###
 nbproject/private/
@@ -22,3 +24,4 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+.log
