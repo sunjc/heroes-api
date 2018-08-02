@@ -1,0 +1,78 @@
+spring:
+  banner:
+    charset: utf-8
+    image:
+      location: classpath:banner.jpg
+    location: classpath:banner.txt
+  resources:
+    add-mappings: true
+
+cors:
+  allowedOrigins: "*"
+  allowedMethods: GET,POST,DELETE,PUT,OPTIONS
+  allowedHeaders: Origin,X-Requested-With,Content-Type,Accept,Accept-Encoding,Accept-Language,Host,Referer,Connection,User-Agent,Authorization
+
+jwt:
+  header: Authorization
+  secret: mySecret
+  expiration: 7200
+  issuer: ITRunner
+  authenticationPath: /auth
+
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /api-docs
+
+management:
+  server:
+    port: 8090
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+info:
+  app:
+    name: heroes
+    version: 1.0
+
+---
+spring:
+  profiles: dev
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+      show-sql: true
+      properties:
+        hibernate:
+          format_sql: true
+  datasource:
+    initialization-mode: always
+server:
+  port: 8080
+
+---
+spring:
+  profiles: prod
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+      show-sql: true
+      properties:
+        hibernate:
+          format_sql: true
+  datasource:
+    initialization-mode: always
+server:
+  port: 8000
+
+---
+spring:
+  profiles:
+    active: dev

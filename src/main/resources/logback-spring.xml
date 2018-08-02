@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <springProfile name="dev">
+        <property name="LOG_FILE" value="heroes.log"/>
+        <property name="AUDIT_FILE" value="audit.log"/>
+    </springProfile>
+    <springProfile name="prod">
+        <property name="LOG_FILE" value="/var/log/heroes.log"/>
+        <property name="AUDIT_FILE" value="/var/log/audit.log"/>
+    </springProfile>
+
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <logger name="root" level="WARN"/>
+
+    <appender name="AUDIT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %5p --- %m%n</pattern>
+        </encoder>
+        <file>${AUDIT_FILE}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>${AUDIT_FILE}.%i</fileNamePattern>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>10MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <logger name="audit" level="info" additivity="false">
+        <appender-ref ref="AUDIT"/>
+    </logger>
+
+    <springProfile name="dev">
+        <logger name="root" level="INFO"/>
+    </springProfile>
+    <springProfile name="prod">
+        <logger name="root" level="INFO"/>
+    </springProfile>
+</configuration>
