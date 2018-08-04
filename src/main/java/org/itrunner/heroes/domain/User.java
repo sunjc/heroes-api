@@ -14,7 +14,6 @@ import java.util.List;
 @Setter
 @Table(name = "USERS")
 public class User {
-
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ")
