@@ -7,6 +7,9 @@ spring:
   resources:
     add-mappings: true
 
+api:
+  base-path: /api
+
 cors:
   allowedOrigins: "*"
   allowedMethods: GET,POST,DELETE,PUT,OPTIONS
@@ -17,7 +20,7 @@ jwt:
   secret: mySecret
   expiration: 7200
   issuer: ITRunner
-  authenticationPath: /auth
+  authentication-path: /auth
 
 springfox:
   documentation:
