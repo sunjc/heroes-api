@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "${api.base-path}", produces = MediaType.APPLICATION_JSON_VALUE)
 @Api(tags = {"Hero Controller"})
 public class HeroController {
     private static final Logger LOG = LoggerFactory.getLogger(HeroController.class);
