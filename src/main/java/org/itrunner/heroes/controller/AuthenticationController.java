@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -31,7 +32,7 @@ public class AuthenticationController {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @PostMapping(value = "${jwt.authenticationPath}")
+    @PostMapping(value = "${jwt.authentication-path}")
     public AuthenticationResponse login(@RequestBody AuthenticationRequest request) {
         // Perform the security
         final Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
@@ -39,10 +40,10 @@ public class AuthenticationController {
 
         // Reload password post-security so we can generate token
         final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
-        final String token = jwtTokenUtil.generate(userDetails.getUsername());
+        final String token = jwtTokenUtil.generate(userDetails);
 
         // Return the token
-        return new AuthenticationResponse(token);
+        return new AuthenticationResponse(token, AuthorityUtils.authorityListToSet(userDetails.getAuthorities()));
     }
 
     @ExceptionHandler(AuthenticationException.class)

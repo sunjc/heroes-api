@@ -2,6 +2,7 @@ package org.itrunner.heroes.config;
 
 import org.itrunner.heroes.config.Config.Cors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,12 +21,23 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import static org.springframework.http.HttpMethod.OPTIONS;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
 @SuppressWarnings("SpringJavaAutowiringInspection")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    private static final String ROLE_ADMIN = "ADMIN";
+
+    @Value("${api.base-path}/**")
+    private String apiPath;
+
+    @Value("${management.endpoints.web.exposure.include}")
+    private String[] actuatorExposures;
+
+    @Autowired
+    private JwtAuthenticationEntryPoint unauthorizedHandler;
+
     @Autowired
     private Config config;
 
@@ -45,11 +57,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and() // don't create session
                 .authorizeRequests()
-                .requestMatchers(EndpointRequest.to("health", "info")).permitAll()
+                .requestMatchers(EndpointRequest.to(actuatorExposures)).permitAll()
                 .antMatchers(config.getJwt().getAuthenticationPath()).permitAll()
                 .antMatchers(OPTIONS, "/**").permitAll()
+                .antMatchers(POST, apiPath).hasRole(ROLE_ADMIN)
+                .antMatchers(PUT, apiPath).hasRole(ROLE_ADMIN)
+                .antMatchers(DELETE, apiPath).hasRole(ROLE_ADMIN)
                 .anyRequest().authenticated().and()
                 .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class) // Custom JWT based security filter
                 .headers().cacheControl(); // disable page caching

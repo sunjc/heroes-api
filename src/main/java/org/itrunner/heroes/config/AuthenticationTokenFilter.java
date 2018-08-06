@@ -4,6 +4,7 @@ import org.itrunner.heroes.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -28,12 +29,11 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
             authToken = authToken.substring(7);
         }
 
-        String username = jwtTokenUtil.verify(authToken);
+        UserDetails user = jwtTokenUtil.verify(authToken);
 
-        logger.info("checking authentication for user " + username);
-
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, null, null);
+        if (user != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            logger.info("checking authentication for user " + user.getUsername());
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), "N/A", user.getAuthorities());
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
