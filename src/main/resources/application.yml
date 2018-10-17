@@ -51,31 +51,42 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
-      show-sql: true
-      properties:
-        hibernate:
-          format_sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
   datasource:
+    platform: h2
     initialization-mode: always
 server:
   port: 8080
 
 ---
 spring:
-  profiles: prod
+  profiles: test
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: create-drop
-      show-sql: true
-      properties:
-        hibernate:
-          format_sql: true
+      ddl-auto: update
+    properties:
+      hibernate:
+        default_schema: heroes
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    show-sql: true
   datasource:
-    initialization-mode: always
+    platform: postgresql
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: hero
+    password: hero
+    initialization-mode: never
 server:
   port: 8000
 
 ---
 spring:
   profiles:
-    active: dev
+    active: @project.profile@
