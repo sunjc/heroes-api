@@ -63,7 +63,7 @@ server:
 
 ---
 spring:
-  profiles: test
+  profiles: prod
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:

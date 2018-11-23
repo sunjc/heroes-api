@@ -42,9 +42,9 @@
         </profile>
 
         <profile>
-            <id>test</id>
+            <id>prod</id>
             <properties>
-                <project.profile>test</project.profile>
+                <project.profile>prod</project.profile>
             </properties>
             <dependencies>
                 <dependency>
