@@ -11,9 +11,9 @@ api:
   base-path: /api
 
 cors:
-  allowedOrigins: "*"
-  allowedMethods: GET,POST,DELETE,PUT,OPTIONS
-  allowedHeaders: Origin,X-Requested-With,Content-Type,Accept,Accept-Encoding,Accept-Language,Host,Referer,Connection,User-Agent,Authorization
+  allowed-origins: "*"
+  allowed-methods: GET,POST,DELETE,PUT,OPTIONS
+  allowed-headers: Origin,X-Requested-With,Content-Type,Accept,Accept-Encoding,Accept-Language,Host,Referer,Connection,User-Agent,Authorization
 
 jwt:
   header: Authorization
