@@ -23,12 +23,16 @@ import java.util.Map;
 public class HeroController {
     private static final Logger LOG = LoggerFactory.getLogger(HeroController.class);
 
+    private final HeroService service;
+
     @Autowired
-    private HeroService service;
+    public HeroController(HeroService service) {
+        this.service = service;
+    }
 
     @ApiOperation(value = "Get hero by id")
     @GetMapping("/heroes/{id}")
-    public Hero getHeroById(@ApiParam(required = true) @PathVariable("id") Long id) {
+    public Hero getHeroById(@ApiParam(required = true, example = "1") @PathVariable("id") Long id) {
         return service.getHeroById(id);
     }
 
@@ -58,7 +62,7 @@ public class HeroController {
 
     @ApiOperation(value = "Delete hero by id")
     @DeleteMapping("/heroes/{id}")
-    public void deleteHero(@ApiParam(required = true) @PathVariable("id") Long id) {
+    public void deleteHero(@ApiParam(required = true, example = "1") @PathVariable("id") Long id) {
         service.deleteHero(id);
     }
 

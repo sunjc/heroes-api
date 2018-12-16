@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 @Component
@@ -21,8 +20,12 @@ public class JwtTokenUtil {
 
     private static final String CLAIM_AUTHORITIES = "authorities";
 
+    private final Config config;
+
     @Autowired
-    private Config config;
+    public JwtTokenUtil(Config config) {
+        this.config = config;
+    }
 
     public String generate(UserDetails user) {
         try {
@@ -34,7 +37,7 @@ public class JwtTokenUtil {
                     .withSubject(user.getUsername())
                     .withArrayClaim(CLAIM_AUTHORITIES, AuthorityUtil.getAuthorities(user))
                     .sign(algorithm);
-        } catch (IllegalArgumentException | UnsupportedEncodingException e) {
+        } catch (IllegalArgumentException e) {
             return null;
         }
     }
