@@ -12,8 +12,12 @@ import java.util.List;
 @Service
 @Transactional
 public class HeroService {
+    private final HeroRepository repository;
+
     @Autowired
-    private HeroRepository repository;
+    public HeroService(HeroRepository repository) {
+        this.repository = repository;
+    }
 
     public Hero getHeroById(Long id) {
         return repository.findById(id).orElseThrow(() -> new HeroNotFoundException(id));

@@ -5,6 +5,7 @@ import org.itrunner.heroes.util.JwtTokenUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,14 +24,18 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticationController {
     private static final Logger LOG = LoggerFactory.getLogger(AuthenticationController.class);
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+
+    private final JwtTokenUtil jwtTokenUtil;
+
+    private final UserDetailsService userDetailsService;
 
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
+    public AuthenticationController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, @Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.userDetailsService = userDetailsService;
+    }
 
     @PostMapping(value = "${jwt.authentication-path}")
     public AuthenticationResponse login(@RequestBody AuthenticationRequest request) {

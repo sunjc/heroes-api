@@ -2,6 +2,7 @@ package org.itrunner.heroes.config;
 
 import org.itrunner.heroes.config.Config.Cors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
@@ -35,14 +36,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${management.endpoints.web.exposure.include}")
     private String[] actuatorExposures;
 
-    @Autowired
-    private JwtAuthenticationEntryPoint unauthorizedHandler;
+    private final JwtAuthenticationEntryPoint unauthorizedHandler;
+
+    private final Config config;
+
+    private final UserDetailsService userDetailsService;
 
     @Autowired
-    private Config config;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
+    public WebSecurityConfig(JwtAuthenticationEntryPoint unauthorizedHandler, Config config, @Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
+        this.unauthorizedHandler = unauthorizedHandler;
+        this.config = config;
+        this.userDetailsService = userDetailsService;
+    }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
