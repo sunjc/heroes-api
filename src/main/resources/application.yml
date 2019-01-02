@@ -7,6 +7,28 @@ spring:
   resources:
     add-mappings: true
 
+management:
+  server:
+    port: 8090
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+info:
+  app:
+    name: heroes
+    version: 1.0
+
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /api-docs
+
 api:
   base-path: /api
 
@@ -21,70 +43,6 @@ jwt:
   expiration: 7200
   issuer: ITRunner
   authentication-path: /auth
-
-springfox:
-  documentation:
-    swagger:
-      v2:
-        path: /api-docs
-
-management:
-  server:
-    port: 8090
-  endpoints:
-    web:
-      base-path: /actuator
-      exposure:
-        include: health,info
-  endpoint:
-    health:
-      show-details: always
-
-info:
-  app:
-    name: heroes
-    version: 1.0
-
----
-spring:
-  profiles: dev
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
-    properties:
-      hibernate:
-        format_sql: true
-    show-sql: true
-  datasource:
-    platform: h2
-    initialization-mode: always
-server:
-  port: 8080
-
----
-spring:
-  profiles: prod
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        default_schema: heroes
-        format_sql: true
-        jdbc:
-          lob:
-            non_contextual_creation: true
-    show-sql: true
-  datasource:
-    platform: postgresql
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: hero
-    password: hero
-    initialization-mode: never
-server:
-  port: 8000
 
 ---
 spring:
