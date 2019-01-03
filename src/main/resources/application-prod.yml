@@ -16,9 +16,17 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/postgres
     username: hero
-    password: hero
+    password: ENC(/gpfe5d4qWBwKaQ5KgPaOA==)
     initialization-mode: never
 server:
   port: 8000
 cors:
   allowed-origins: itrunner.org
+jasypt:
+  encryptor:
+    algorithm: PBEWithMD5AndDES
+    password: 1qefhQH7mRR4LADVettR
+    stringOutputType: base64
+    property:
+      prefix: ENC(
+      suffix: )
