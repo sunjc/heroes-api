@@ -14,7 +14,7 @@ fi
 mv /tmp/src $HOME/heroes-api
 
 cd $HOME/heroes-api
-mvn clean package -Dmaven.test.skip=true
+mvn clean package -Pdev -Dmaven.test.skip=true
 mv $HOME/heroes-api/target/heroes-api-1.0.0.jar $HOME/heroes-api/
 
 
