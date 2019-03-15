@@ -19,10 +19,11 @@ LABEL io.k8s.description="Heroes API" \
     io.openshift.expose-services="8080:http" \
     io.openshift.tags="spring boot" \
     # this label tells s2i where to find its mandatory scripts(run, assemble, save-artifacts)
-    io.openshift.s2i.scripts-url="image:///usr/libexec/s2i"
+    io.openshift.s2i.scripts-url="image:///usr/libexec/s2i" \
+    io.openshift.s2i.destination="/tmp/s2i/"
 
 # Copy the S2I scripts to /usr/libexec/s2i since we set the label that way
-COPY .s2i /usr/libexec/s2i
+COPY .s2i/bin/ /usr/libexec/s2i
 
 # Set the default port for applications built using this image
 EXPOSE 8080

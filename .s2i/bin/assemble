@@ -11,9 +11,9 @@ if [ "$(ls /tmp/s2i/artifacts/ 2>/dev/null)" ]; then
 fi
 
 # move the application source
-mv /tmp/s2i/src $HOME/src
+# mv /tmp/s2i/src $HOME/src
 
-mvn clean package -Dmaven.test.skip=true
+# mvn clean package -Dmaven.test.skip=true
 
 
 
