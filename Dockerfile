@@ -1,14 +1,14 @@
 # heroes-api-centos7
-# Here you can use whatever base image is relevant for your application.
 FROM centos:latest
 
 RUN yum -y update && yum -y clean all
 
 COPY lib /usr/lib
+COPY .m2 /root/.m2
 
-ENV JAVA_HOME /usr/lib/jdk1.8.0_202
-ENV MAVEN_HOME /usr/lib/apache-maven-3.6.0
-ENV PATH $JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH
+ENV JAVA_HOME=/usr/lib/jdk1.8.0_202 \
+    MAVEN_HOME=/usr/lib/apache-maven-3.6.0 \
+    PATH=/usr/lib/jdk1.8.0_202/bin:/usr/lib/apache-maven-3.6.0/bin:$PATH
 
 # Here you can specify the maintainer for the image that you're building
 LABEL maintainer="Sun Jingchuan <jason@163.com>"
@@ -23,7 +23,7 @@ LABEL io.k8s.description="Heroes API" \
     io.openshift.s2i.destination="/tmp"
 
 # Copy the S2I scripts to /usr/libexec/s2i since we set the label that way
-COPY .s2i/bin/ /usr/libexec/s2i
+COPY .s2i/bin /usr/libexec/s2i
 
 # Set the default port for applications built using this image
 EXPOSE 8080

@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+echo "------`pwd`------"
+
 if [[ "$1" == "-h" ]]; then
 	# print the usage.
 	exec /usr/libexec/s2i/usage
@@ -16,6 +18,3 @@ mv /tmp/src $HOME/heroes-api
 cd $HOME/heroes-api
 mvn clean package -Pdev -Dmaven.test.skip=true
 mv $HOME/heroes-api/target/heroes-api-1.0.0.jar $HOME/heroes-api/
-
-
-
