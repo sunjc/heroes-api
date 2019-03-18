@@ -13,8 +13,8 @@ if [ "$(ls /tmp/s2i/artifacts/ 2>/dev/null)" ]; then
 fi
 
 # move the application source
-mv /tmp/src /heroes
+mv /tmp/src /heroes/heroes-api
 
-cd /heroes
+cd /heroes/heroes-api
 mvn clean package -Pdev -Dmaven.test.skip=true
-mv /heroes/target/heroes-api-1.0.0.jar /heroes/
+mv /heroes/heroes-api/target/heroes-api-1.0.0.jar /heroes/heroes-api/

@@ -2,4 +2,4 @@
 
 echo "------`pwd`------"
 
-java -jar /heroes/heroes-api-1.0.0.jar
+java -jar /heroes/heroes-api/heroes-api-1.0.0.jar
