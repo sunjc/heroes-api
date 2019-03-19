@@ -16,7 +16,7 @@ LABEL maintainer="Sun Jingchuan <jason@163.com>" \
 ENV JAVA_HOME=/usr/lib/jdk1.8.0_202 \
     MAVEN_HOME=/usr/lib/apache-maven-3.6.0 \
     APP_ROOT=/opt/heroes
-ENV PATH=${JAVA_HOME}/bin:${MAVEN_HOME}/bin:${APP_ROOT}/bin:${PATH}
+ENV PATH=${JAVA_HOME}/bin:${MAVEN_HOME}/bin:${APP_ROOT}/bin:${PATH} HOME=${APP_ROOT}
 
 # Include jdk and maven in lib
 COPY lib /usr/lib
