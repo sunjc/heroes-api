@@ -1,20 +1,16 @@
 #!/bin/bash -e
 
-echo "------`pwd`------"
-
-if [[ "$1" == "-h" ]]; then
-	# print the usage.
-	exec /usr/libexec/s2i/usage
-fi
-
 # restore build artifacts
 if [ "$(ls /tmp/s2i/artifacts/ 2>/dev/null)" ]; then
     mv /tmp/s2i/artifacts/* $HOME/.
 fi
 
 # move the application source
-mv /tmp/src /opt/heroes/heroes-api
+mv /tmp/s2i/src $HOME/src
 
-cd /opt/heroes/heroes-api
+pushd $HOME/src
 mvn clean package -Pdev -Dmaven.test.skip=true
-mv /opt/heroes/heroes-api/target/heroes-api-1.0.0.jar /opt/heroes/heroes-api/
+popd
+
+mv $HOME/src/target/heroes-api-1.0.0.jar $HOME/heroes-api/
+rm -rf $HOME/src
