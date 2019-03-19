@@ -12,5 +12,5 @@ pushd $HOME/src
 mvn clean package -Pdev -Dmaven.test.skip=true
 popd
 
-mv $HOME/src/target/heroes-api-1.0.0.jar $HOME/heroes-api/
+mv $HOME/src/target/heroes-api-1.0.0.jar $HOME/
 rm -rf $HOME/src
