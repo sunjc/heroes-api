@@ -1,12 +1,12 @@
 #!/bin/bash -e
 
 # restore build artifacts
-if [ "$(ls /tmp/s2i/artifacts/ 2>/dev/null)" ]; then
-    mv /tmp/s2i/artifacts/* $HOME/.
+if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
+    mv /tmp/artifacts/* $HOME/.
 fi
 
 # move the application source
-mv /tmp/s2i/src $HOME/src
+mv /tmp/src $HOME/src
 
 pushd $HOME/src
 mvn clean package -Pdev -Dmaven.test.skip=true
