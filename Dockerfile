@@ -1,7 +1,7 @@
 # heroes-api-centos7
 FROM centos:latest
 
-RUN yum -y update && yum -y install git && yum -y clean all
+RUN yum -y update && yum clean all
 
 # Set the labels that are used for OpenShift to describe the builder image.
 LABEL maintainer="Sun Jingchuan <jason@163.com>" \
