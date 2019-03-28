@@ -19,7 +19,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "${api.base-path}", produces = MediaType.APPLICATION_JSON_VALUE)
 @Api(tags = {"Authentication Controller"})
 public class AuthenticationController {
     private static final Logger LOG = LoggerFactory.getLogger(AuthenticationController.class);
@@ -37,7 +37,7 @@ public class AuthenticationController {
         this.userDetailsService = userDetailsService;
     }
 
-    @PostMapping(value = "${jwt.authentication-path}")
+    @PostMapping("/auth")
     public AuthenticationResponse login(@RequestBody AuthenticationRequest request) {
         // Perform the security
         final Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));

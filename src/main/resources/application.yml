@@ -42,7 +42,7 @@ jwt:
   secret: mySecret
   expiration: 7200
   issuer: ITRunner
-  authentication-path: /auth
+  authentication-path: /api/auth
 
 ---
 spring:

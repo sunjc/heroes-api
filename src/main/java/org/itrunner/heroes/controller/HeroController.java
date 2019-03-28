@@ -30,37 +30,37 @@ public class HeroController {
         this.service = service;
     }
 
-    @ApiOperation(value = "Get hero by id")
+    @ApiOperation("Get hero by id")
     @GetMapping("/heroes/{id}")
     public Hero getHeroById(@ApiParam(required = true, example = "1") @PathVariable("id") Long id) {
         return service.getHeroById(id);
     }
 
-    @ApiOperation(value = "Get all heroes")
+    @ApiOperation("Get all heroes")
     @GetMapping("/heroes")
     public List<Hero> getHeroes() {
         return service.getAllHeroes();
     }
 
-    @ApiOperation(value = "Search heroes by name")
+    @ApiOperation("Search heroes by name")
     @GetMapping("/heroes/")
     public List<Hero> searchHeroes(@ApiParam(required = true) @RequestParam("name") String name) {
         return service.findHeroesByName(name);
     }
 
-    @ApiOperation(value = "Add new hero")
+    @ApiOperation("Add new hero")
     @PostMapping("/heroes")
     public Hero addHero(@ApiParam(required = true) @RequestBody Hero hero) {
         return service.saveHero(hero);
     }
 
-    @ApiOperation(value = "Update hero info")
+    @ApiOperation("Update hero info")
     @PutMapping("/heroes")
     public Hero updateHero(@ApiParam(required = true) @RequestBody Hero hero) {
         return service.saveHero(hero);
     }
 
-    @ApiOperation(value = "Delete hero by id")
+    @ApiOperation("Delete hero by id")
     @DeleteMapping("/heroes/{id}")
     public void deleteHero(@ApiParam(required = true, example = "1") @PathVariable("id") Long id) {
         service.deleteHero(id);
