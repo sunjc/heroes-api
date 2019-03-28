@@ -2,15 +2,18 @@
 
 # restore build artifacts
 if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
+    echo "restore build artifacts"
     mv /tmp/artifacts/* $HOME/.
 fi
 
 # move the application source
 mv /tmp/src $HOME/src
 
+# build the application artifacts
 pushd $HOME/src
 mvn clean package -Pdev -Dmaven.test.skip=true
 popd
 
+# move the artifacts
 mv $HOME/src/target/heroes-api-1.0.0.jar $HOME/
 rm -rf $HOME/src

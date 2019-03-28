@@ -2,7 +2,7 @@
 
 pushd ${HOME}
 if [ -d .m2 ]; then
-    # all .m2 contents to tar stream
+    echo "all .m2 contents to tar stream"
     tar cf - .m2
 fi
 popd
