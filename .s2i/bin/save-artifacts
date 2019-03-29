@@ -1,8 +1,9 @@
 #!/bin/bash
 
-pushd ${HOME}
+# Besides the tar command, all other output to standard out must be surpressed.  Otherwise, the tar stream will be corrupted.
+pushd ${HOME} >/dev/null
 if [ -d .m2 ]; then
-    echo "all .m2 contents to tar stream"
+    # all .m2 contents to tar stream
     tar cf - .m2
 fi
-popd
+popd >/dev/null
