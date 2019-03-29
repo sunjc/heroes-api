@@ -1,9 +1,9 @@
 #!/bin/bash -e
 
 # restore build artifacts
-if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
+if [ -d /tmp/artifacts/.m2 ]; then
     echo "restore build artifacts"
-    mv /tmp/artifacts/* $HOME/.
+    mv /tmp/artifacts/.m2 $HOME/.
 fi
 
 # move the application source
