@@ -1,12 +1,34 @@
-node {
-    checkout scm
-    stage('Test') {
-        bat 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent test'
+pipeline {
+  agent any
+  tools {
+    jdk 'jdk8'
+    maven 'maven-3.6'
+  }
+  stages {
+    stage("Clone Source") {
+      steps {
+        checkout([$class: 'GitSCM',
+          branches: [[name: '*/master']],
+          extensions: [
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: 'heroes-api']
+          ],
+          userRemoteConfigs: [[url: 'https://github.com/sunjc/heroes-api.git']]
+        ])
+      }
     }
-    stage('Sonar') {
-        bat 'mvn sonar:sonar'
+    stage("Build Backend") {
+      steps {
+        dir('heroes-api') {
+          sh 'mvn clean package -Pdev -Dmaven.test.skip=true'
+        }
+      }
     }
-    stage('Package') {
-        bat 'mvn clean package -Dmaven.test.skip=true'
+    stage("Build Image") {
+      steps {
+        dir('heroes-api/target') {
+          sh 'oc start-build heroes-api --from-dir . --follow'
+        }
+      }
     }
+  }
 }
