@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: @project.profile@
   banner:
     charset: utf-8
     image:
@@ -43,8 +45,3 @@ jwt:
   expiration: 7200
   issuer: ITRunner
   authentication-path: /api/auth
-
----
-spring:
-  profiles:
-    active: @project.profile@
