@@ -9,8 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories(basePackages = {"org.itrunner.heroes.repository"})
 @EntityScan(basePackages = {"org.itrunner.heroes.domain"})
 public class HeroesApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(HeroesApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(HeroesApplication.class, args);
+    }
 }

@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -23,7 +24,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class HeroesApplicationTests {
 
     @Autowired
@@ -36,7 +37,7 @@ public class HeroesApplicationTests {
         AuthenticationRequest authenticationRequest = new AuthenticationRequest();
         authenticationRequest.setUsername("admin");
         authenticationRequest.setPassword("admin");
-        token = restTemplate.postForObject("/auth", authenticationRequest, AuthenticationResponse.class).getToken();
+        token = restTemplate.postForObject("/api/auth", authenticationRequest, AuthenticationResponse.class).getToken();
 
         restTemplate.getRestTemplate().setInterceptors(
                 Collections.singletonList((request, body, execution) -> {
@@ -52,7 +53,7 @@ public class HeroesApplicationTests {
         AuthenticationRequest request = new AuthenticationRequest();
         request.setUsername("admin");
         request.setPassword("111111");
-        int statusCode = restTemplate.postForEntity("/auth", request, HttpEntity.class).getStatusCodeValue();
+        int statusCode = restTemplate.postForEntity("/api/auth", request, HttpEntity.class).getStatusCodeValue();
         assertThat(statusCode).isEqualTo(403);
     }
 
