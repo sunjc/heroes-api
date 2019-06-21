@@ -37,7 +37,7 @@ api:
 cors:
   allowed-origins: "*"
   allowed-methods: GET,POST,DELETE,PUT,OPTIONS
-  allowed-headers: Origin,X-Requested-With,Content-Type,Accept,Accept-Encoding,Accept-Language,Host,Referer,Connection,User-Agent,Authorization
+  allowed-headers: Accept,Accept-Encoding,Accept-Language,Authorization,Connection,Content-Type,Host,Origin,Referer,User-Agent,X-Requested-With
 
 jwt:
   header: Authorization
