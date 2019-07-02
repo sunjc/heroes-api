@@ -68,9 +68,7 @@ public class HeroesApplicationTests {
 
         // update hero
         hero.setName("Jacky");
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Authorization", "Bearer " + token);
-        HttpEntity<Hero> requestEntity = new HttpEntity<>(hero, httpHeaders);
+        HttpEntity<Hero> requestEntity = new HttpEntity<>(hero);
         hero = restTemplate.exchange("/api/heroes", HttpMethod.PUT, requestEntity, Hero.class).getBody();
         assertThat(hero.getName()).isEqualTo("Jacky");
 
@@ -91,5 +89,13 @@ public class HeroesApplicationTests {
         // delete hero
         response = restTemplate.exchange("/api/heroes/9999", HttpMethod.DELETE, null, String.class);
         assertThat(response.getStatusCodeValue()).isEqualTo(400);
+    }
+
+    @Test
+    public void validate() {
+        // add hero
+        Hero hero = new Hero();
+        int statusCodeValue = restTemplate.postForEntity("/api/heroes", hero, Hero.class).getStatusCodeValue();
+        assertThat(statusCodeValue).isEqualTo(400);
     }
 }

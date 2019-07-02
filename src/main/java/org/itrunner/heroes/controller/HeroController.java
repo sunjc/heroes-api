@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +51,7 @@ public class HeroController {
 
     @ApiOperation("Add new hero")
     @PostMapping("/heroes")
-    public Hero addHero(@ApiParam(required = true) @RequestBody Hero hero) {
+    public Hero addHero(@ApiParam(required = true) @Valid @RequestBody Hero hero) {
         return service.saveHero(hero);
     }
 
