@@ -6,6 +6,9 @@ spring:
     image:
       location: classpath:banner.jpg
     location: classpath:banner.txt
+  messages:
+    encoding: UTF-8
+    basename: messages
   resources:
     add-mappings: true
 
