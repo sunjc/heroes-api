@@ -3,6 +3,7 @@ package org.itrunner.heroes;
 import org.itrunner.heroes.controller.AuthenticationRequest;
 import org.itrunner.heroes.controller.AuthenticationResponse;
 import org.itrunner.heroes.domain.Hero;
+import org.itrunner.heroes.exception.ErrorMessage;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -95,7 +96,8 @@ public class HeroesApplicationTests {
     public void validate() {
         // add hero
         Hero hero = new Hero();
-        int statusCodeValue = restTemplate.postForEntity("/api/heroes", hero, Hero.class).getStatusCodeValue();
-        assertThat(statusCodeValue).isEqualTo(400);
+        ResponseEntity<ErrorMessage> responseEntity = restTemplate.postForEntity("/api/heroes", hero, ErrorMessage.class);
+        assertThat(responseEntity.getStatusCodeValue()).isEqualTo(400);
+        assertThat(responseEntity.getBody().getType()).isEqualTo("MethodArgumentNotValidException");
     }
 }

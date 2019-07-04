@@ -6,6 +6,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -17,27 +18,36 @@ public class ErrorControllerAdvice {
             DuplicateKeyException.class,
             DataIntegrityViolationException.class,
             DataAccessException.class,
+            MethodArgumentNotValidException.class,
             Exception.class
     })
     public ResponseEntity<ErrorMessage> handleException(Exception e) {
         LOG.error(e.getMessage(), e);
 
         if (e instanceof DuplicateKeyException) {
-            return handleMessage("40001", e.getMessage());
+            return handleMessage(getExceptionName(e), e.getMessage());
         }
 
         if (e instanceof DataIntegrityViolationException) {
-            return handleMessage("40002", e.getMessage());
+            return handleMessage(getExceptionName(e), e.getMessage());
         }
 
         if (e instanceof DataAccessException) {
-            return handleMessage("40003", e.getMessage());
+            return handleMessage(getExceptionName(e), e.getMessage());
         }
 
-        return handleMessage("40000", e.getMessage());
+        if (e instanceof MethodArgumentNotValidException) {
+            return handleMessage(getExceptionName(e), ((MethodArgumentNotValidException) e).getBindingResult().toString());
+        }
+
+        return handleMessage(getExceptionName(e), e.getMessage());
     }
 
-    private ResponseEntity<ErrorMessage> handleMessage(String code, String message) {
-        return ResponseEntity.badRequest().body(new ErrorMessage(code, message));
+    private ResponseEntity<ErrorMessage> handleMessage(String type, String message) {
+        return ResponseEntity.badRequest().body(new ErrorMessage(type, message));
+    }
+
+    private String getExceptionName(Exception e) {
+        return e.getClass().getSimpleName();
     }
 }

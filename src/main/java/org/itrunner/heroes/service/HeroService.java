@@ -3,6 +3,7 @@ package org.itrunner.heroes.service;
 import org.itrunner.heroes.domain.Hero;
 import org.itrunner.heroes.exception.HeroNotFoundException;
 import org.itrunner.heroes.repository.HeroRepository;
+import org.itrunner.heroes.util.Messages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,13 +15,16 @@ import java.util.List;
 public class HeroService {
     private final HeroRepository repository;
 
+    private final Messages messages;
+
     @Autowired
-    public HeroService(HeroRepository repository) {
+    public HeroService(HeroRepository repository, Messages messages) {
         this.repository = repository;
+        this.messages = messages;
     }
 
     public Hero getHeroById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new HeroNotFoundException(id));
+        return repository.findById(id).orElseThrow(() -> new HeroNotFoundException(messages.getMessage("hero.notFound", new Object[]{id})));
     }
 
     public List<Hero> getAllHeroes() {
