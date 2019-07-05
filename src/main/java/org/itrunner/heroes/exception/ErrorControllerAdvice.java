@@ -5,10 +5,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.List;
 
 @ControllerAdvice(basePackages = {"org.itrunner.heroes.controller"})
 public class ErrorControllerAdvice {
@@ -25,26 +30,39 @@ public class ErrorControllerAdvice {
         LOG.error(e.getMessage(), e);
 
         if (e instanceof DuplicateKeyException) {
-            return handleMessage(getExceptionName(e), e.getMessage());
+            return badRequest(getExceptionName(e), e.getMessage());
         }
 
         if (e instanceof DataIntegrityViolationException) {
-            return handleMessage(getExceptionName(e), e.getMessage());
+            return badRequest(getExceptionName(e), e.getMessage());
         }
 
         if (e instanceof DataAccessException) {
-            return handleMessage(getExceptionName(e), e.getMessage());
+            return badRequest(getExceptionName(e), e.getMessage());
         }
 
         if (e instanceof MethodArgumentNotValidException) {
-            return handleMessage(getExceptionName(e), ((MethodArgumentNotValidException) e).getBindingResult().toString());
+            return handleMethodArgumentNotValid((MethodArgumentNotValidException) e);
         }
 
-        return handleMessage(getExceptionName(e), e.getMessage());
+        return badRequest(getExceptionName(e), e.getMessage());
     }
 
-    private ResponseEntity<ErrorMessage> handleMessage(String type, String message) {
-        return ResponseEntity.badRequest().body(new ErrorMessage(type, message));
+    private ResponseEntity<ErrorMessage> handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
+        ErrorMessage errorMessage = new ErrorMessage(getExceptionName(e), "Validation Failed");
+        List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
+        fieldErrors.forEach(error -> errorMessage.addDetailMessage(error.getField() + " " + error.getDefaultMessage()));
+        List<ObjectError> globalErrors = e.getBindingResult().getGlobalErrors();
+        globalErrors.forEach(error -> errorMessage.addDetailMessage(error.getDefaultMessage()));
+        return badRequest(errorMessage);
+    }
+
+    private ResponseEntity<ErrorMessage> badRequest(ErrorMessage errorMessage) {
+        return new ResponseEntity(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
+    private ResponseEntity<ErrorMessage> badRequest(String type, String message) {
+        return badRequest(new ErrorMessage(type, message));
     }
 
     private String getExceptionName(Exception e) {

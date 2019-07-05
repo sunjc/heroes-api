@@ -59,7 +59,7 @@ public class HeroesApplicationTests {
     }
 
     @Test
-    public void add_update_find_delete_hero() {
+    public void crudSuccess() {
         Hero hero = new Hero();
         hero.setName("Jack");
 
@@ -93,8 +93,7 @@ public class HeroesApplicationTests {
     }
 
     @Test
-    public void validate() {
-        // add hero
+    public void addHeroValidationFailed() {
         Hero hero = new Hero();
         ResponseEntity<ErrorMessage> responseEntity = restTemplate.postForEntity("/api/heroes", hero, ErrorMessage.class);
         assertThat(responseEntity.getStatusCodeValue()).isEqualTo(400);
