@@ -3,10 +3,9 @@ package org.itrunner.heroes.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.itrunner.heroes.domain.Hero;
 import org.itrunner.heroes.service.HeroService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.MediaType;
@@ -21,9 +20,8 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "${api.base-path}", produces = MediaType.APPLICATION_JSON_VALUE)
 @Api(tags = {"Hero Controller"})
+@Slf4j
 public class HeroController {
-    private static final Logger LOG = LoggerFactory.getLogger(HeroController.class);
-
     private final HeroService service;
 
     @Autowired
@@ -69,7 +67,7 @@ public class HeroController {
 
     @ExceptionHandler(DataAccessException.class)
     public ResponseEntity<Map<String, Object>> handleDataAccessException(DataAccessException exception) {
-        LOG.error(exception.getMessage(), exception);
+        log.error(exception.getMessage(), exception);
         Map<String, Object> body = new HashMap<>();
         body.put("message", exception.getMessage());
         return ResponseEntity.badRequest().body(body);

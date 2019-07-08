@@ -1,9 +1,8 @@
 package org.itrunner.heroes.controller;
 
 import io.swagger.annotations.Api;
+import lombok.extern.slf4j.Slf4j;
 import org.itrunner.heroes.util.JwtTokenUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -21,9 +20,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "${api.base-path}", produces = MediaType.APPLICATION_JSON_VALUE)
 @Api(tags = {"Authentication Controller"})
+@Slf4j
 public class AuthenticationController {
-    private static final Logger LOG = LoggerFactory.getLogger(AuthenticationController.class);
-
     private final AuthenticationManager authenticationManager;
 
     private final JwtTokenUtil jwtTokenUtil;
@@ -54,6 +52,6 @@ public class AuthenticationController {
     @ExceptionHandler(AuthenticationException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public void handleAuthenticationException(AuthenticationException exception) {
-        LOG.error(exception.getMessage(), exception);
+        log.error(exception.getMessage(), exception);
     }
 }

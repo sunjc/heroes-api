@@ -1,7 +1,6 @@
 package org.itrunner.heroes.exception;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
@@ -16,8 +15,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.List;
 
 @ControllerAdvice(basePackages = {"org.itrunner.heroes.controller"})
+@Slf4j
 public class ErrorControllerAdvice {
-    private static final Logger LOG = LoggerFactory.getLogger(ErrorControllerAdvice.class);
 
     @ExceptionHandler({
             DuplicateKeyException.class,
@@ -27,7 +26,7 @@ public class ErrorControllerAdvice {
             Exception.class
     })
     public ResponseEntity<ErrorMessage> handleException(Exception e) {
-        LOG.error(e.getMessage(), e);
+        log.error(e.getMessage(), e);
 
         if (e instanceof DuplicateKeyException) {
             return badRequest(getExceptionName(e), e.getMessage());
