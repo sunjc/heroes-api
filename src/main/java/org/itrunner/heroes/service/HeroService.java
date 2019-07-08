@@ -14,7 +14,6 @@ import java.util.List;
 @Transactional
 public class HeroService {
     private final HeroRepository repository;
-
     private final Messages messages;
 
     @Autowired

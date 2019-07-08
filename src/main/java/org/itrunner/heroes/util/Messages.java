@@ -12,7 +12,7 @@ public class Messages {
     private MessageSource messageSource;
 
     public String getMessage(String code) {
-        return messageSource.getMessage(code, null, LocaleContextHolder.getLocale());
+        return getMessage(code, null);
     }
 
     public String getMessage(String code, Object[] objects) {
