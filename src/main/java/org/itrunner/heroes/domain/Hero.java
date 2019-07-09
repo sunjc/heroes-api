@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "HERO", uniqueConstraints = {@UniqueConstraint(name = "UK_HERO_NAME", columnNames = {"NAME"})})
 public class Hero {
     @Id
     @Column(name = "ID")
@@ -18,7 +19,7 @@ public class Hero {
     @SequenceGenerator(name = "HERO_SEQ", sequenceName = "HERO_SEQ", allocationSize = 1)
     private Long id;
 
-    @Column(name = "NAME", unique = true, length = 30)
+    @Column(name = "NAME", length = 30, nullable = false)
     @NotNull
     private String name;
 }
