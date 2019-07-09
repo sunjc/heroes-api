@@ -57,7 +57,7 @@ public class ErrorControllerAdvice {
     }
 
     private ResponseEntity<ErrorMessage> badRequest(ErrorMessage errorMessage) {
-        return new ResponseEntity(errorMessage, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
 
     private ResponseEntity<ErrorMessage> badRequest(String type, String message) {

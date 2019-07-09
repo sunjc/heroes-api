@@ -18,13 +18,9 @@ public class ErrorMessage {
     @NonNull
     private String message;
 
-    private List details = new ArrayList();
+    private List<String> details = new ArrayList<>();
 
     public void addDetailMessage(String message) {
         this.details.add(message);
-    }
-
-    public void clearDetailMessage() {
-        this.details.clear();
     }
 }
