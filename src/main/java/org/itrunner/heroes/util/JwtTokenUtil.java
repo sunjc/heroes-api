@@ -4,8 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.itrunner.heroes.config.Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -15,11 +14,9 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
+@Slf4j
 public class JwtTokenUtil {
-    private static final Log LOG = LogFactory.getLog(JwtTokenUtil.class);
-
     private static final String CLAIM_AUTHORITIES = "authorities";
-
     private final Config config;
 
     @Autowired
@@ -42,10 +39,6 @@ public class JwtTokenUtil {
         }
     }
 
-    /**
-     * @param token
-     * @return username
-     */
     public UserDetails verify(String token) {
         if (token == null) {
             return null;
@@ -57,7 +50,7 @@ public class JwtTokenUtil {
             DecodedJWT jwt = verifier.verify(token);
             return new User(jwt.getSubject(), "N/A", AuthorityUtil.createGrantedAuthorities(jwt.getClaim(CLAIM_AUTHORITIES).asArray(String.class)));
         } catch (Exception e) {
-            LOG.error(e);
+            log.error(e.getMessage(), e);
             return null;
         }
     }
