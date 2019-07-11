@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @ControllerAdvice(basePackages = {"org.itrunner.heroes.controller"})
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({
+            EntityNotFoundException.class,
             DuplicateKeyException.class,
             DataIntegrityViolationException.class,
             DataAccessException.class,
@@ -27,6 +29,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     })
     public final ResponseEntity<Object> handleAllException(Exception e) {
         logger.error(e.getMessage(), e);
+
+        if (e instanceof EntityNotFoundException) {
+            return notFound(getExceptionName(e), e.getMessage());
+        }
 
         if (e instanceof DuplicateKeyException) {
             return badRequest(getExceptionName(e), e.getMessage());
@@ -65,6 +71,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     private ResponseEntity<Object> badRequest(String error, String message) {
         return badRequest(new ErrorMessage(error, message));
+    }
+
+    private ResponseEntity<Object> notFound(String error, String message) {
+        return new ResponseEntity(new ErrorMessage(error, message), HttpStatus.NOT_FOUND);
     }
 
     private String getExceptionName(Exception e) {
