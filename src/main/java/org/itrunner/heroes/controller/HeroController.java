@@ -55,7 +55,7 @@ public class HeroController {
 
     @ApiOperation("Update hero info")
     @PutMapping("/heroes")
-    public Hero updateHero(@ApiParam(required = true) @RequestBody Hero hero) {
+    public Hero updateHero(@ApiParam(required = true) @Valid @RequestBody Hero hero) {
         return service.saveHero(hero);
     }
 

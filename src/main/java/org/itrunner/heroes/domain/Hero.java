@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Data
@@ -19,7 +20,8 @@ public class Hero {
     @SequenceGenerator(name = "HERO_SEQ", sequenceName = "HERO_SEQ", allocationSize = 1)
     private Long id;
 
-    @Column(name = "NAME", length = 30, nullable = false)
     @NotNull
+    @Size(min = 3, max = 30)
+    @Column(name = "NAME", length = 30, nullable = false)
     private String name;
 }
