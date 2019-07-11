@@ -31,14 +31,12 @@ public class HeroesApplicationTests {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    private String token;
-
     @Before
     public void setup() {
         AuthenticationRequest authenticationRequest = new AuthenticationRequest();
         authenticationRequest.setUsername("admin");
         authenticationRequest.setPassword("admin");
-        token = restTemplate.postForObject("/api/auth", authenticationRequest, AuthenticationResponse.class).getToken();
+        String token = restTemplate.postForObject("/api/auth", authenticationRequest, AuthenticationResponse.class).getToken();
 
         restTemplate.getRestTemplate().setInterceptors(
                 Collections.singletonList((request, body, execution) -> {

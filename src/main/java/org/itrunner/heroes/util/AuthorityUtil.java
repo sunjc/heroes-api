@@ -23,6 +23,6 @@ public final class AuthorityUtil {
     }
 
     public static String[] getAuthorities(UserDetails user) {
-        return user.getAuthorities().stream().map(GrantedAuthority::<String>getAuthority).toArray(String[]::new);
+        return user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toArray(String[]::new);
     }
 }
