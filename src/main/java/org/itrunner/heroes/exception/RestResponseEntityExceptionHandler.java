@@ -25,7 +25,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
             DataAccessException.class,
             Exception.class
     })
-    public ResponseEntity<Object> handleException(Exception e) {
+    public final ResponseEntity<Object> handleAllException(Exception e) {
         logger.error(e.getMessage(), e);
 
         if (e instanceof DuplicateKeyException) {
@@ -45,11 +45,12 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ErrorMessage errorMessage = new ErrorMessage(getExceptionName(ex), "Validation Failed");
-        List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
-        fieldErrors.forEach(error -> errorMessage.addDetailMessage(error.getField() + " " + error.getDefaultMessage()));
+        StringBuilder messages = new StringBuilder();
         List<ObjectError> globalErrors = ex.getBindingResult().getGlobalErrors();
-        globalErrors.forEach(error -> errorMessage.addDetailMessage(error.getDefaultMessage()));
+        globalErrors.forEach(error -> messages.append(error.getDefaultMessage()).append(";"));
+        List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
+        fieldErrors.forEach(error -> messages.append(error.getField()).append(" ").append(error.getDefaultMessage()).append(";"));
+        ErrorMessage errorMessage = new ErrorMessage(getExceptionName(ex), messages.toString());
         return badRequest(errorMessage);
     }
 
@@ -62,8 +63,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
 
-    private ResponseEntity<Object> badRequest(String type, String message) {
-        return badRequest(new ErrorMessage(type, message));
+    private ResponseEntity<Object> badRequest(String error, String message) {
+        return badRequest(new ErrorMessage(error, message));
     }
 
     private String getExceptionName(Exception e) {

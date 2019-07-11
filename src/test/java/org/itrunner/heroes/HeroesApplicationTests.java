@@ -97,6 +97,6 @@ public class HeroesApplicationTests {
         Hero hero = new Hero();
         ResponseEntity<ErrorMessage> responseEntity = restTemplate.postForEntity("/api/heroes", hero, ErrorMessage.class);
         assertThat(responseEntity.getStatusCodeValue()).isEqualTo(400);
-        assertThat(responseEntity.getBody().getType()).isEqualTo("MethodArgumentNotValidException");
+        assertThat(responseEntity.getBody().getError()).isEqualTo("MethodArgumentNotValidException");
     }
 }
