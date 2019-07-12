@@ -6,7 +6,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -40,20 +39,6 @@ public class User {
     @Column(name = "ENABLED")
     @NotNull
     private Boolean enabled;
-
-    @Column(name = "CREATE_BY", length = 50, nullable = false)
-    private String createBy;
-
-    @Column(name = "CREATE_TIME", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createTime;
-
-    @Column(name = "LAST_MODIFIED_BY", length = 50)
-    private String lastModifiedBy;
-
-    @Column(name = "LAST_MODIFIED_TIME")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastModifiedTime;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "USER_AUTHORITY", joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID", foreignKey = @ForeignKey(name = "FK_USER_ID"))},
