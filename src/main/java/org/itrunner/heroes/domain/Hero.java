@@ -1,7 +1,13 @@
 package org.itrunner.heroes.domain;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,6 +17,8 @@ import java.util.Date;
 @Entity
 @Data
 @NoArgsConstructor
+@JsonPropertyOrder({"id", "name"})
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "HERO", uniqueConstraints = {@UniqueConstraint(name = "UK_HERO_NAME", columnNames = {"HERO_NAME"})})
 public class Hero {
     @Id
@@ -25,17 +33,21 @@ public class Hero {
     private String name;
 
     @Column(name = "CREATE_BY", length = 50)
+    @CreatedBy
     private String createBy;
 
     @Column(name = "CREATE_TIME")
     @Temporal(TemporalType.TIMESTAMP)
+    @CreatedDate
     private Date createTime;
 
     @Column(name = "LAST_MODIFIED_BY", length = 50)
+    @LastModifiedBy
     private String lastModifiedBy;
 
     @Column(name = "LAST_MODIFIED_TIME")
     @Temporal(TemporalType.TIMESTAMP)
+    @LastModifiedDate
     private Date lastModifiedTime;
 
     public Hero(Long id, String name) {
