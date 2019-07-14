@@ -17,6 +17,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
+import static org.springframework.core.NestedExceptionUtils.getMostSpecificCause;
+
 @ControllerAdvice(basePackages = {"org.itrunner.heroes.controller"})
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -39,14 +41,14 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         }
 
         if (e instanceof DataIntegrityViolationException) {
-            return badRequest(getExceptionName(e), e.getMessage());
+            return badRequest(getExceptionName(e), getMostSpecificMessage(e));
         }
 
         if (e instanceof DataAccessException) {
-            return badRequest(getExceptionName(e), e.getMessage());
+            return badRequest(getExceptionName(e), getMostSpecificMessage(e));
         }
 
-        return badRequest(getExceptionName(e), e.getMessage());
+        return badRequest(getExceptionName(e), getMostSpecificMessage(e));
     }
 
     @Override
@@ -79,5 +81,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     private String getExceptionName(Exception e) {
         return e.getClass().getSimpleName();
+    }
+
+    private String getMostSpecificMessage(Exception e) {
+        return getMostSpecificCause(e).getMessage();
     }
 }

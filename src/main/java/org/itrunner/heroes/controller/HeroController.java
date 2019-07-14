@@ -7,15 +7,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.itrunner.heroes.domain.Hero;
 import org.itrunner.heroes.service.HeroService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "${api.base-path}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -65,11 +61,11 @@ public class HeroController {
         service.deleteHero(id);
     }
 
-    @ExceptionHandler(DataAccessException.class)
+    /*@ExceptionHandler(DataAccessException.class)
     public ResponseEntity<Map<String, Object>> handleDataAccessException(DataAccessException exception) {
         log.error(exception.getMessage(), exception);
         Map<String, Object> body = new HashMap<>();
         body.put("message", exception.getMessage());
         return ResponseEntity.badRequest().body(body);
-    }
+    }*/
 }
