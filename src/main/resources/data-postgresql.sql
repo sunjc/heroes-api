@@ -1,8 +1,13 @@
-INSERT INTO heroes.HERO(ID, HERO_NAME, CREATE_BY, CREATE_TIME) VALUES(NEXTVAL('heroes.HERO_SEQ'), 'Black Widow', 'admin', to_date('01-07-2019', 'dd-MM-yyyy'));
-INSERT INTO heroes.HERO(ID, HERO_NAME, CREATE_BY, CREATE_TIME) VALUES(NEXTVAL('heroes.HERO_SEQ'), 'Superman', 'admin', to_date('01-07-2019', 'dd-MM-yyyy'));
-INSERT INTO heroes.HERO(ID, HERO_NAME, CREATE_BY, CREATE_TIME) VALUES(NEXTVAL('heroes.HERO_SEQ'), 'Rogue', 'admin', to_date('01-07-2019', 'dd-MM-yyyy'));
-INSERT INTO heroes.HERO(ID, HERO_NAME, CREATE_BY, CREATE_TIME) VALUES(NEXTVAL('heroes.HERO_SEQ'), 'Batman', 'admin', to_date('01-07-2019', 'dd-MM-yyyy'));
-INSERT INTO heroes.HERO(ID, HERO_NAME, CREATE_BY, CREATE_TIME) VALUES(NEXTVAL('heroes.HERO_SEQ'), 'Jason', 'admin', to_date('01-07-2019', 'dd-MM-yyyy'));
+INSERT INTO heroes.HERO(ID, HERO_NAME, CREATE_BY, CREATE_TIME) VALUES(NEXTVAL('heroes.HERO_SEQ'), 'Dr Nice', 'admin', to_date('01-07-2019', 'dd-MM-yyyy'));
+INSERT INTO heroes.HERO(ID, HERO_NAME, CREATE_BY, CREATE_TIME) VALUES(NEXTVAL('heroes.HERO_SEQ'), 'Narco', 'admin', to_date('01-07-2019', 'dd-MM-yyyy'));
+INSERT INTO heroes.HERO(ID, HERO_NAME, CREATE_BY, CREATE_TIME) VALUES(NEXTVAL('heroes.HERO_SEQ'), 'Bombasto', 'admin', to_date('01-07-2019', 'dd-MM-yyyy'));
+INSERT INTO heroes.HERO(ID, HERO_NAME, CREATE_BY, CREATE_TIME) VALUES(NEXTVAL('heroes.HERO_SEQ'), 'Celeritas', 'admin', to_date('01-07-2019', 'dd-MM-yyyy'));
+INSERT INTO heroes.HERO(ID, HERO_NAME, CREATE_BY, CREATE_TIME) VALUES(NEXTVAL('heroes.HERO_SEQ'), 'Magneta', 'admin', to_date('01-07-2019', 'dd-MM-yyyy'));
+INSERT INTO heroes.HERO(ID, HERO_NAME, CREATE_BY, CREATE_TIME) VALUES(NEXTVAL('heroes.HERO_SEQ'), 'RubberMan', 'admin', to_date('01-07-2019', 'dd-MM-yyyy'));
+INSERT INTO heroes.HERO(ID, HERO_NAME, CREATE_BY, CREATE_TIME) VALUES(NEXTVAL('heroes.HERO_SEQ'), 'Dynama', 'admin', to_date('01-07-2019', 'dd-MM-yyyy'));
+INSERT INTO heroes.HERO(ID, HERO_NAME, CREATE_BY, CREATE_TIME) VALUES(NEXTVAL('heroes.HERO_SEQ'), 'Dr IQ', 'admin', to_date('01-07-2019', 'dd-MM-yyyy'));
+INSERT INTO heroes.HERO(ID, HERO_NAME, CREATE_BY, CREATE_TIME) VALUES(NEXTVAL('heroes.HERO_SEQ'), 'Magma', 'admin', to_date('01-07-2019', 'dd-MM-yyyy'));
+INSERT INTO heroes.HERO(ID, HERO_NAME, CREATE_BY, CREATE_TIME) VALUES(NEXTVAL('heroes.HERO_SEQ'), 'Tornado', 'admin', to_date('01-07-2019', 'dd-MM-yyyy'));
 
 INSERT INTO heroes.USERS(ID, USERNAME, PASSWORD, EMAIL, ENABLED) VALUES (NEXTVAL('heroes.USER_SEQ'), 'admin', '$2a$08$lDnHPz7eUkSi6ao14Twuau08mzhWrL4kyZGGU5xfiGALO/Vxd5DOi', 'admin@itrunner.org', TRUE);
 INSERT INTO heroes.USERS(ID, USERNAME, PASSWORD, EMAIL, ENABLED) VALUES (NEXTVAL('heroes.USER_SEQ'), 'jason', '$2a$10$6m2VoqZAxa.HJNErs2lZyOFde92PzjPqc88WL2QXYT3IXqZmYMk8i', 'jason@itrunner.org', TRUE);
