@@ -32,11 +32,11 @@ public class Hero {
     @Column(name = "HERO_NAME", length = 30, nullable = false)
     private String name;
 
-    @Column(name = "CREATE_BY", length = 50)
+    @Column(name = "CREATE_BY", length = 50, updatable = false, nullable = false)
     @CreatedBy
     private String createBy;
 
-    @Column(name = "CREATE_TIME")
+    @Column(name = "CREATE_TIME", updatable = false, nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date createTime;
