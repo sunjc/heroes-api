@@ -75,7 +75,7 @@ public class HeroesApplicationTests {
         Map<String, String> urlVariables = new HashMap<>();
         urlVariables.put("name", "m");
         List<Hero> heroes = restTemplate.getForObject("/api/heroes/?name={name}", List.class, urlVariables);
-        assertThat(heroes.size()).isEqualTo(2);
+        assertThat(heroes.size()).isEqualTo(5);
 
         // get hero by id
         hero = restTemplate.getForObject("/api/heroes/" + hero.getId(), Hero.class);
