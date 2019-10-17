@@ -19,11 +19,11 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
     private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    private Config config;
+    private SecurityProperties securityProperties;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        String authToken = request.getHeader(config.getJwt().getHeader());
+        String authToken = request.getHeader(securityProperties.getJwt().getHeader());
 
         if (authToken != null && authToken.startsWith("Bearer ")) {
             authToken = authToken.substring(7);

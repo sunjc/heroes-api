@@ -20,8 +20,9 @@ spring:
     initialization-mode: never
 server:
   port: 8000
-cors:
-  allowed-origins: itrunner.org
+security:
+  cors:
+    allowed-origins: itrunner.org
 jasypt:
   encryptor:
     algorithm: PBEWithMD5AndDES

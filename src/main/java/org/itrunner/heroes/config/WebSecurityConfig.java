@@ -1,6 +1,6 @@
 package org.itrunner.heroes.config;
 
-import org.itrunner.heroes.config.Config.Cors;
+import org.itrunner.heroes.config.SecurityProperties.Cors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,14 +38,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationEntryPoint unauthorizedHandler;
 
-    private final Config config;
+    private final SecurityProperties securityProperties;
 
     private final UserDetailsService userDetailsService;
 
     @Autowired
-    public WebSecurityConfig(JwtAuthenticationEntryPoint unauthorizedHandler, Config config, @Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
+    public WebSecurityConfig(JwtAuthenticationEntryPoint unauthorizedHandler, SecurityProperties securityProperties, @Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
         this.unauthorizedHandler = unauthorizedHandler;
-        this.config = config;
+        this.securityProperties = securityProperties;
         this.userDetailsService = userDetailsService;
     }
 
@@ -66,7 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and() // don't create session
                 .authorizeRequests()
                 .requestMatchers(EndpointRequest.to(actuatorExposures)).permitAll()
-                .antMatchers(config.getJwt().getAuthenticationPath()).permitAll()
+                .antMatchers(securityProperties.getJwt().getAuthenticationPath()).permitAll()
                 .antMatchers(OPTIONS, "/**").permitAll()
                 .antMatchers(POST, apiPath).hasRole(ROLE_ADMIN)
                 .antMatchers(PUT, apiPath).hasRole(ROLE_ADMIN)
@@ -95,7 +95,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        Cors cors = config.getCors();
+        Cors cors = securityProperties.getCors();
         configuration.setAllowedOrigins(cors.getAllowedOrigins());
         configuration.setAllowedMethods(cors.getAllowedMethods());
         configuration.setAllowedHeaders(cors.getAllowedHeaders());

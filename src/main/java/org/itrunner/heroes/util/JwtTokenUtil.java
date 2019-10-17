@@ -5,7 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
-import org.itrunner.heroes.config.Config;
+import org.itrunner.heroes.config.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,20 +17,20 @@ import java.util.Date;
 @Slf4j
 public class JwtTokenUtil {
     private static final String CLAIM_AUTHORITIES = "authorities";
-    private final Config config;
+    private final SecurityProperties.Jwt jwtProperties;
 
     @Autowired
-    public JwtTokenUtil(Config config) {
-        this.config = config;
+    public JwtTokenUtil(SecurityProperties securityProperties) {
+        this.jwtProperties = securityProperties.getJwt();
     }
 
     public String generate(UserDetails user) {
         try {
-            Algorithm algorithm = Algorithm.HMAC256(config.getJwt().getSecret());
+            Algorithm algorithm = Algorithm.HMAC256(jwtProperties.getSecret());
             return JWT.create()
-                    .withIssuer(config.getJwt().getIssuer())
+                    .withIssuer(jwtProperties.getIssuer())
                     .withIssuedAt(new Date())
-                    .withExpiresAt(new Date(System.currentTimeMillis() + config.getJwt().getExpiration() * 1000))
+                    .withExpiresAt(new Date(System.currentTimeMillis() + jwtProperties.getExpiration() * 1000))
                     .withSubject(user.getUsername())
                     .withArrayClaim(CLAIM_AUTHORITIES, AuthorityUtil.getAuthorities(user))
                     .sign(algorithm);
@@ -45,8 +45,8 @@ public class JwtTokenUtil {
         }
 
         try {
-            Algorithm algorithm = Algorithm.HMAC256(config.getJwt().getSecret());
-            JWTVerifier verifier = JWT.require(algorithm).withIssuer(config.getJwt().getIssuer()).build();
+            Algorithm algorithm = Algorithm.HMAC256(jwtProperties.getSecret());
+            JWTVerifier verifier = JWT.require(algorithm).withIssuer(jwtProperties.getIssuer()).build();
             DecodedJWT jwt = verifier.verify(token);
             return new User(jwt.getSubject(), "N/A", AuthorityUtil.createGrantedAuthorities(jwt.getClaim(CLAIM_AUTHORITIES).asArray(String.class)));
         } catch (Exception e) {

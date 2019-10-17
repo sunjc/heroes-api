@@ -1,6 +1,6 @@
 package org.itrunner.heroes.util;
 
-import org.itrunner.heroes.config.Config;
+import org.itrunner.heroes.config.SecurityProperties;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,19 +16,19 @@ import static org.mockito.BDDMockito.given;
 @RunWith(MockitoJUnitRunner.class)
 public class JwtTokenUtilTest {
     @Mock
-    private Config config;
+    private SecurityProperties securityProperties;
 
     @InjectMocks
     private JwtTokenUtil jwtTokenUtil;
 
     @Before
     public void setup() {
-        Config.Jwt jwtConfig = new Config.Jwt();
+        SecurityProperties.Jwt jwtConfig = new SecurityProperties.Jwt();
         jwtConfig.setIssuer("ITRunner");
         jwtConfig.setSecret("mySecret");
         jwtConfig.setExpiration(7200L);
 
-        given(config.getJwt()).willReturn(jwtConfig);
+        given(securityProperties.getJwt()).willReturn(jwtConfig);
     }
 
     @Test

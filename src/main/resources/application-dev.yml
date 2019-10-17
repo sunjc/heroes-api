@@ -11,5 +11,6 @@ spring:
     initialization-mode: always
 server:
   port: 8080
-cors:
-  allowed-origins: "*"
+security:
+  cors:
+    allowed-origins: "*"
