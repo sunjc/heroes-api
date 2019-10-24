@@ -20,9 +20,6 @@ spring:
     initialization-mode: never
 server:
   port: 8000
-security:
-  cors:
-    allowed-origins: itrunner.org
 jasypt:
   encryptor:
     algorithm: PBEWithMD5AndDES
@@ -31,3 +28,12 @@ jasypt:
     property:
       prefix: ENC(
       suffix: )
+keycloak:
+  enabled: true
+  auth-server-url: https://sso.itrunner.org/auth
+  realm: heroes
+  resource: heroes
+  public-client: true
+  ssl-required: external
+  disable-trust-manager: true
+  bearer-only: true

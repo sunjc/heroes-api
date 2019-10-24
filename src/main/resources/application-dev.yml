@@ -11,6 +11,10 @@ spring:
     initialization-mode: always
 server:
   port: 8080
-security:
-  cors:
-    allowed-origins: "*"
+keycloak:
+  enabled: true
+  auth-server-url: http://localhost:8090/auth
+  realm: heroes
+  resource: heroes
+  public-client: true
+  bearer-only: true

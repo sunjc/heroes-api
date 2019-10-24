@@ -1,7 +1,5 @@
 package org.itrunner.heroes;
 
-import org.itrunner.heroes.controller.AuthenticationRequest;
-import org.itrunner.heroes.controller.AuthenticationResponse;
 import org.itrunner.heroes.domain.Hero;
 import org.itrunner.heroes.exception.ErrorMessage;
 import org.junit.Before;
@@ -11,11 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -33,27 +30,26 @@ public class HeroesApplicationTests {
 
     @Before
     public void setup() {
-        AuthenticationRequest authenticationRequest = new AuthenticationRequest();
-        authenticationRequest.setUsername("admin");
-        authenticationRequest.setPassword("admin");
-        String token = restTemplate.postForObject("/api/auth", authenticationRequest, AuthenticationResponse.class).getToken();
+        HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("grant_type", "password");
+        map.add("client_id", "heroes");
+        map.add("username", "admin");
+        map.add("password", "admin");
+
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(map, requestHeaders);
+
+        Map<String, String> response = restTemplate.postForObject("http://localhost:8090/auth/realms/heroes/protocol/openid-connect/token", requestEntity, Map.class);
+        String token = response.get("access_token");
 
         restTemplate.getRestTemplate().setInterceptors(
                 Collections.singletonList((request, body, execution) -> {
                     HttpHeaders headers = request.getHeaders();
-                    headers.add("Authorization", "Bearer " + token);
-                    headers.add("Content-Type", "application/json");
+                    headers.setBearerAuth(token);
                     return execution.execute(request, body);
                 }));
-    }
-
-    @Test
-    public void loginFailure() {
-        AuthenticationRequest request = new AuthenticationRequest();
-        request.setUsername("admin");
-        request.setPassword("111111");
-        int statusCode = restTemplate.postForEntity("/api/auth", request, HttpEntity.class).getStatusCodeValue();
-        assertThat(statusCode).isEqualTo(403);
     }
 
     @Test

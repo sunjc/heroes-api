@@ -1,1 +1,1 @@
-Demo project for Spring Boot
+Demo Project for Spring Boot

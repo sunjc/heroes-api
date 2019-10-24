@@ -1,53 +1,41 @@
 package org.itrunner.heroes.config;
 
-import org.itrunner.heroes.config.SecurityProperties.Cors;
+import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents;
+import org.keycloak.adapters.springsecurity.client.KeycloakClientRequestFactory;
+import org.keycloak.adapters.springsecurity.client.KeycloakRestTemplate;
+import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
+import org.keycloak.adapters.springsecurity.filter.KeycloakAuthenticatedActionsFilter;
+import org.keycloak.adapters.springsecurity.filter.KeycloakAuthenticationProcessingFilter;
+import org.keycloak.adapters.springsecurity.filter.KeycloakPreAuthActionsFilter;
+import org.keycloak.adapters.springsecurity.filter.KeycloakSecurityContextRequestFilter;
+import org.keycloak.adapters.springsecurity.management.HttpSessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import static org.springframework.http.HttpMethod.*;
+import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
 @Configuration
 @EnableWebSecurity
-@SuppressWarnings("SpringJavaAutowiringInspection")
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private static final String ROLE_ADMIN = "ADMIN";
-
-    @Value("${api.base-path}/**")
-    private String apiPath;
-
+@ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
+public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     @Value("${management.endpoints.web.exposure.include}")
     private String[] actuatorExposures;
 
-    private final JwtAuthenticationEntryPoint unauthorizedHandler;
-
-    private final SecurityProperties securityProperties;
-
-    private final UserDetailsService userDetailsService;
-
     @Autowired
-    public WebSecurityConfig(JwtAuthenticationEntryPoint unauthorizedHandler, SecurityProperties securityProperties, @Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
-        this.unauthorizedHandler = unauthorizedHandler;
-        this.securityProperties = securityProperties;
-        this.userDetailsService = userDetailsService;
-    }
+    public KeycloakClientRequestFactory keycloakClientRequestFactory;
 
     @Override
     public void configure(WebSecurity web) {
@@ -56,51 +44,59 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
+        auth.authenticationProvider(keycloakAuthenticationProvider());
+    }
+
+    @Bean
+    @Override
+    protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
+        return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and() // don't create session
-                .authorizeRequests()
-                .requestMatchers(EndpointRequest.to(actuatorExposures)).permitAll()
-                .antMatchers(securityProperties.getJwt().getAuthenticationPath()).permitAll()
-                .antMatchers(OPTIONS, "/**").permitAll()
-                .antMatchers(POST, apiPath).hasRole(ROLE_ADMIN)
-                .antMatchers(PUT, apiPath).hasRole(ROLE_ADMIN)
-                .antMatchers(DELETE, apiPath).hasRole(ROLE_ADMIN)
-                .anyRequest().authenticated().and()
-                .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class) // Custom JWT based security filter
-                .headers().cacheControl(); // disable page caching
+        super.configure(http);
+        http.csrf().disable().authorizeRequests().requestMatchers(EndpointRequest.to(actuatorExposures)).permitAll().anyRequest().authenticated();
+    }
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public KeycloakRestTemplate keycloakRestTemplate() {
+        return new KeycloakRestTemplate(keycloakClientRequestFactory);
+    }
+
+    @Bean
+    public FilterRegistrationBean keycloakAuthenticationProcessingFilterRegistrationBean(KeycloakAuthenticationProcessingFilter filter) {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean(filter);
+        registrationBean.setEnabled(false);
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean keycloakPreAuthActionsFilterRegistrationBean(KeycloakPreAuthActionsFilter filter) {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean(filter);
+        registrationBean.setEnabled(false);
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean keycloakAuthenticatedActionsFilterBean(KeycloakAuthenticatedActionsFilter filter) {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean(filter);
+        registrationBean.setEnabled(false);
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean keycloakSecurityContextRequestFilterBean(KeycloakSecurityContextRequestFilter filter) {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean(filter);
+        registrationBean.setEnabled(false);
+        return registrationBean;
     }
 
     @Bean
     @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-    @Bean
-    public AuthenticationTokenFilter authenticationTokenFilterBean() {
-        return new AuthenticationTokenFilter();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        Cors cors = securityProperties.getCors();
-        configuration.setAllowedOrigins(cors.getAllowedOrigins());
-        configuration.setAllowedMethods(cors.getAllowedMethods());
-        configuration.setAllowedHeaders(cors.getAllowedHeaders());
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
+    @ConditionalOnMissingBean(HttpSessionManager.class)
+    protected HttpSessionManager httpSessionManager() {
+        return new HttpSessionManager();
     }
 }

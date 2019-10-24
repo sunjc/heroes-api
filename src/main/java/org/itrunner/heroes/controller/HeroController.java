@@ -60,12 +60,4 @@ public class HeroController {
     public void deleteHero(@ApiParam(required = true, example = "1") @PathVariable("id") Long id) {
         service.deleteHero(id);
     }
-
-    /*@ExceptionHandler(DataAccessException.class)
-    public ResponseEntity<Map<String, Object>> handleDataAccessException(DataAccessException exception) {
-        log.error(exception.getMessage(), exception);
-        Map<String, Object> body = new HashMap<>();
-        body.put("message", exception.getMessage());
-        return ResponseEntity.badRequest().body(body);
-    }*/
 }
