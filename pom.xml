@@ -9,12 +9,12 @@
     <packaging>jar</packaging>
 
     <name>heroes</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Demo Project for Spring Boot</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.0.RELEASE</version>
+        <version>2.2.1.RELEASE</version>
         <relativePath/>
     </parent>
 
