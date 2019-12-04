@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
-public class HeroServiceTest {
+class HeroServiceTest {
     @MockBean
     private HeroRepository heroRepository;
 
