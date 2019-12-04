@@ -2,10 +2,12 @@ package org.itrunner.heroes.service;
 
 import org.itrunner.heroes.domain.Hero;
 import org.itrunner.heroes.repository.HeroRepository;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,19 +16,17 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
-//@RunWith(MockitoJUnitRunner.class)
+@SpringBootTest(webEnvironment = WebEnvironment.NONE)
 public class HeroServiceTest {
-    @Mock
+    @MockBean
     private HeroRepository heroRepository;
 
-    @InjectMocks
+    @Autowired
     private HeroService heroService;
 
-    private List<Hero> heroes;
-
-    @BeforeAll
-    public void setup() {
-        heroes = new ArrayList<>();
+    @BeforeEach
+    void setup() {
+        List<Hero> heroes = new ArrayList<>();
         heroes.add(new Hero(1L, "Rogue"));
         heroes.add(new Hero(2L, "Jason"));
 
@@ -36,19 +36,19 @@ public class HeroServiceTest {
     }
 
     @Test
-    public void getHeroById() {
+    void getHeroById() {
         Hero hero = heroService.getHeroById(1L);
         assertThat(hero.getName()).isEqualTo("Rogue");
     }
 
     @Test
-    public void getAllHeroes() {
+    void getAllHeroes() {
         List<Hero> heroes = heroService.getAllHeroes();
         assertThat(heroes.size()).isEqualTo(2);
     }
 
     @Test
-    public void findHeroesByName() {
+    void findHeroesByName() {
         List<Hero> heroes = heroService.findHeroesByName("o");
         assertThat(heroes.size()).isEqualTo(2);
     }

@@ -20,13 +20,13 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class HeroesApplicationTests {
+class HeroesApplicationTests {
 
     @Autowired
     private TestRestTemplate restTemplate;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
@@ -50,7 +50,7 @@ public class HeroesApplicationTests {
     }
 
     @Test
-    public void crudSuccess() {
+    void crudSuccess() {
         Hero hero = new Hero();
         hero.setName("Jack");
 
@@ -84,7 +84,7 @@ public class HeroesApplicationTests {
     }
 
     @Test
-    public void addHeroValidationFailed() {
+    void addHeroValidationFailed() {
         Hero hero = new Hero();
         ResponseEntity<ErrorMessage> responseEntity = restTemplate.postForEntity("/api/heroes", hero, ErrorMessage.class);
         assertThat(responseEntity.getStatusCodeValue()).isEqualTo(400);
