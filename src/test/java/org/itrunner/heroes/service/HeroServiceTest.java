@@ -2,12 +2,10 @@ package org.itrunner.heroes.service;
 
 import org.itrunner.heroes.domain.Hero;
 import org.itrunner.heroes.repository.HeroRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +14,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
-@RunWith(MockitoJUnitRunner.class)
+//@RunWith(MockitoJUnitRunner.class)
 public class HeroServiceTest {
     @Mock
     private HeroRepository heroRepository;
@@ -26,7 +24,7 @@ public class HeroServiceTest {
 
     private List<Hero> heroes;
 
-    @Before
+    @BeforeAll
     public void setup() {
         heroes = new ArrayList<>();
         heroes.add(new Hero(1L, "Rogue"));
