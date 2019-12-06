@@ -1,6 +1,7 @@
 package org.itrunner.heroes.util;
 
-import org.keycloak.adapters.RefreshableKeycloakSecurityContext;
+import org.keycloak.KeycloakSecurityContext;
+import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.keycloak.representations.AccessToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,16 +11,17 @@ import java.util.Optional;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
-public class KeycloakContext {
+public final class KeycloakContext {
     private KeycloakContext() {
     }
 
     public static Optional<AccessToken> getAccessToken() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated() || !(authentication.getCredentials() instanceof RefreshableKeycloakSecurityContext)) {
+        if (authentication == null || !(authentication instanceof KeycloakAuthenticationToken) || !authentication.isAuthenticated()) {
             return empty();
         }
-        return of(((RefreshableKeycloakSecurityContext) authentication.getCredentials()).getToken());
+        KeycloakSecurityContext credentials = (KeycloakSecurityContext) authentication.getCredentials();
+        return of(credentials.getToken());
     }
 
     public static Optional<String> getUsername() {

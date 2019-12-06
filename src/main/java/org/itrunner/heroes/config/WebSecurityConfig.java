@@ -10,7 +10,6 @@ import org.keycloak.adapters.springsecurity.filter.KeycloakAuthenticationProcess
 import org.keycloak.adapters.springsecurity.filter.KeycloakPreAuthActionsFilter;
 import org.keycloak.adapters.springsecurity.filter.KeycloakSecurityContextRequestFilter;
 import org.keycloak.adapters.springsecurity.management.HttpSessionManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
@@ -18,7 +17,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,21 +26,26 @@ import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
-@Configuration
 @EnableWebSecurity
 @ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
 public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     private static final String ROLE_ADMIN = "ADMIN";
 
+    @Value("${security.ignore-paths}")
+    private String[] ignorePaths;
+
     @Value("${management.endpoints.web.exposure.include}")
     private String[] actuatorExposures;
 
-    @Autowired
-    public KeycloakClientRequestFactory keycloakClientRequestFactory;
+    public final KeycloakClientRequestFactory keycloakClientRequestFactory;
+
+    public WebSecurityConfig(KeycloakClientRequestFactory keycloakClientRequestFactory) {
+        this.keycloakClientRequestFactory = keycloakClientRequestFactory;
+    }
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/api-docs", "/swagger-resources/**", "/swagger-ui.html**", "/webjars/**");
+        web.ignoring().antMatchers(ignorePaths);
     }
 
     @Override

@@ -37,6 +37,9 @@ springfox:
 api:
   base-path: /api
 
+security:
+  ignore-paths: /api-docs,/swagger-resources/**,/swagger-ui.html**,/webjars/**
+
 keycloak:
   cors: true
   cors-allowed-methods: GET,POST,DELETE,PUT,OPTIONS
