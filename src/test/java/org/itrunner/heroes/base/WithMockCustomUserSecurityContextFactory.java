@@ -3,12 +3,12 @@ package org.itrunner.heroes.base;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.RefreshableKeycloakSecurityContext;
 import org.keycloak.adapters.spi.KeycloakAccount;
-import org.keycloak.adapters.springsecurity.account.KeycloakRole;
 import org.keycloak.adapters.springsecurity.account.SimpleKeycloakAccount;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.keycloak.representations.AccessToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithSecurityContextFactory;
@@ -24,6 +24,7 @@ public class WithMockCustomUserSecurityContextFactory implements WithSecurityCon
         accessToken.setPreferredUsername(keycloakUser.username());
         accessToken.setEmail(keycloakUser.email());
         accessToken.expiration(Integer.MAX_VALUE);
+        accessToken.setScope("openid profile email");
         accessToken.type("Bearer");
 
         RefreshableKeycloakSecurityContext keycloakSecurityContext = new RefreshableKeycloakSecurityContext(null, null, "access-token-string", accessToken, null, null, null);
@@ -33,7 +34,7 @@ public class WithMockCustomUserSecurityContextFactory implements WithSecurityCon
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         for (String role : keycloakUser.roles()) {
             roles.add(role);
-            grantedAuthorities.add(new KeycloakRole(role));
+            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role));
         }
         KeycloakAccount account = new SimpleKeycloakAccount(principal, roles, keycloakSecurityContext);
         Authentication auth = new KeycloakAuthenticationToken(account, false, grantedAuthorities);
