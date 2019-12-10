@@ -3,12 +3,10 @@ package org.itrunner.heroes.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
-
-public final class JsonUtil {
+public final class JsonUtils {
     private static ObjectMapper mapper = new ObjectMapper();
 
-    private JsonUtil() {
+    private JsonUtils() {
     }
 
     /**
@@ -21,7 +19,7 @@ public final class JsonUtil {
     /**
      * Deserialize JSON content from given JSON content String.
      */
-    public static <T> T parseJson(String content, Class<T> valueType) throws IOException {
+    public static <T> T parseJson(String content, Class<T> valueType) throws JsonProcessingException {
         return mapper.readValue(content, valueType);
     }
 }
