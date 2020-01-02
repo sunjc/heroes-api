@@ -11,6 +11,14 @@ spring:
     basename: messages
   resources:
     add-mappings: true
+  quartz:
+    auto-startup: true
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: always
+    overwrite-existing-jobs: true
+    properties:
+      org.quartz.threadPool.threadCount: 5
 
 management:
   server:
