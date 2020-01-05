@@ -44,8 +44,8 @@ public class ScheduleService {
 
     private void addCalendar() throws SchedulerException {
         WeeklyCalendar calendar = new WeeklyCalendar();
-        calendar.setDayExcluded(1, false);
-        calendar.setDayExcluded(7, true);
+        calendar.setDayExcluded(1, true);
+        calendar.setDayExcluded(7, false);
         this.scheduler.addCalendar("weekly", calendar, false, false);
     }
 
