@@ -27,7 +27,7 @@ public class ScheduleService {
         }
     }
 
-    public void cancelSchedule(String jobName) throws SchedulerException {
+    public void unscheduleJob(String jobName) throws SchedulerException {
         scheduler.pauseJob(JobKey.jobKey(jobName, GROUP_NAME));
         scheduler.unscheduleJob(TriggerKey.triggerKey(jobName, GROUP_NAME));
     }
