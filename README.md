@@ -7,3 +7,4 @@
 * [Spring Boot集成SpringFox Swagger的Pageable参数问题](https://blog.51cto.com/7308310/2082742)
 * [Spring Boot加密配置属性](https://blog.51cto.com/7308310/2338146)
 * [快速部署OpenShift应用](https://blog.51cto.com/7308310/2369482)
+* [Spring Boot集成Spring Scheduler和Quartz Scheduler](https://blog.51cto.com/7308310/2464491)
