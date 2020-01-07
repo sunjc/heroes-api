@@ -6,6 +6,8 @@ import org.itrunner.heroes.exception.HeroNotFoundException;
 import org.itrunner.heroes.repository.HeroRepository;
 import org.itrunner.heroes.util.Messages;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,9 +32,9 @@ public class HeroService {
         return MAPPER.toHeroDto(hero);
     }
 
-    public List<HeroDto> getAllHeroes() {
-        List<Hero> heroes = repository.findAll();
-        return MAPPER.toHeroDtos(heroes);
+    public Page<HeroDto> getAllHeroes(Pageable pageable) {
+        Page<Hero> heroes = repository.findAll(pageable);
+        return MAPPER.toHeroDtoPage(heroes);
     }
 
     public List<HeroDto> findHeroesByName(String name) {

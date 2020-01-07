@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,7 @@ class HeroServiceTest {
         heroes.add(new Hero(2L, "Jason"));
 
         given(heroRepository.findById(1L)).willReturn(Optional.of(heroes.get(0)));
-        given(heroRepository.findAll()).willReturn(heroes);
+        given(heroRepository.findAll(PageRequest.of(0, 10))).willReturn(Page.empty());
         given(heroRepository.findByName("o")).willReturn(heroes);
     }
 
@@ -43,8 +45,8 @@ class HeroServiceTest {
 
     @Test
     void getAllHeroes() {
-        List<HeroDto> heroes = heroService.getAllHeroes();
-        assertThat(heroes.size()).isEqualTo(2);
+        Page<HeroDto> heroes = heroService.getAllHeroes(PageRequest.of(0, 10));
+        assertThat(heroes.getTotalElements()).isEqualTo(0);
     }
 
     @Test

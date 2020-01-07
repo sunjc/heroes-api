@@ -58,7 +58,7 @@ public class ScheduleService {
     private JobDetail createJobDetail() {
         JobDataMap jobDataMap = new JobDataMap();
         jobDataMap.put(JOB_NAME, "getHeroes");
-        jobDataMap.put(JOB_REST_URI, "http://localhost:8080/api/heroes");
+        jobDataMap.put(JOB_REST_URI, "http://localhost:8080/api/heroes/?name=Magma");
         jobDataMap.put(JOB_REQUEST_METHOD, "GET");
 
         return JobBuilder.newJob(RestJob.class).withIdentity("getHeroes", GROUP_NAME).usingJobData(jobDataMap).storeDurably().build();

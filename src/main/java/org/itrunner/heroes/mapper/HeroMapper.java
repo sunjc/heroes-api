@@ -4,6 +4,7 @@ import org.itrunner.heroes.domain.Hero;
 import org.itrunner.heroes.dto.HeroDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -16,4 +17,8 @@ public interface HeroMapper {
     Hero toHero(HeroDto heroDto);
 
     List<HeroDto> toHeroDtos(List<Hero> heroes);
+
+    default Page<HeroDto> toHeroDtoPage(Page<Hero> heroPage) {
+        return heroPage.map(this::toHeroDto);
+    }
 }
