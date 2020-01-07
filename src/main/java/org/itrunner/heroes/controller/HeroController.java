@@ -4,7 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
-import org.itrunner.heroes.domain.Hero;
+import org.itrunner.heroes.dto.HeroDto;
 import org.itrunner.heroes.service.HeroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -27,31 +27,31 @@ public class HeroController {
 
     @ApiOperation("Get hero by id")
     @GetMapping("/heroes/{id}")
-    public Hero getHeroById(@ApiParam(required = true, example = "1") @PathVariable("id") Long id) {
+    public HeroDto getHeroById(@ApiParam(required = true, example = "1") @PathVariable("id") Long id) {
         return service.getHeroById(id);
     }
 
     @ApiOperation("Get all heroes")
     @GetMapping("/heroes")
-    public List<Hero> getHeroes() {
+    public List<HeroDto> getHeroes() {
         return service.getAllHeroes();
     }
 
     @ApiOperation("Search heroes by name")
     @GetMapping("/heroes/")
-    public List<Hero> searchHeroes(@ApiParam(required = true) @RequestParam("name") String name) {
+    public List<HeroDto> searchHeroes(@ApiParam(required = true) @RequestParam("name") String name) {
         return service.findHeroesByName(name);
     }
 
     @ApiOperation("Add new hero")
     @PostMapping("/heroes")
-    public Hero addHero(@ApiParam(required = true) @Valid @RequestBody Hero hero) {
+    public HeroDto addHero(@ApiParam(required = true) @Valid @RequestBody HeroDto hero) {
         return service.saveHero(hero);
     }
 
     @ApiOperation("Update hero info")
     @PutMapping("/heroes")
-    public Hero updateHero(@ApiParam(required = true) @Valid @RequestBody Hero hero) {
+    public HeroDto updateHero(@ApiParam(required = true) @Valid @RequestBody HeroDto hero) {
         return service.saveHero(hero);
     }
 

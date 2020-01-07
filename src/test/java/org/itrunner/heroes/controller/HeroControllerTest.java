@@ -2,6 +2,7 @@ package org.itrunner.heroes.controller;
 
 import org.itrunner.heroes.base.WithMockKeycloakUser;
 import org.itrunner.heroes.domain.Hero;
+import org.itrunner.heroes.dto.HeroDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,12 +24,12 @@ class HeroControllerTest {
     @Test
     @WithMockKeycloakUser
     public void crudSuccess() throws Exception {
-        Hero hero = new Hero();
+        HeroDto hero = new HeroDto();
         hero.setName("Jack");
 
         // add hero
         mvc.perform(post("/api/heroes").content(asJson(hero)).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk()).andExpect(content().json("{'id':11, 'name':'Jack', 'createBy':'admin'}"));
+                .andExpect(status().isOk()).andExpect(content().json("{'id':11, 'name':'Jack'}"));
 
         // update hero
         hero.setId(11l);

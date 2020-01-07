@@ -1,6 +1,7 @@
 package org.itrunner.heroes.service;
 
 import org.itrunner.heroes.domain.Hero;
+import org.itrunner.heroes.dto.HeroDto;
 import org.itrunner.heroes.repository.HeroRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,19 +37,19 @@ class HeroServiceTest {
 
     @Test
     void getHeroById() {
-        Hero hero = heroService.getHeroById(1L);
+        HeroDto hero = heroService.getHeroById(1L);
         assertThat(hero.getName()).isEqualTo("Rogue");
     }
 
     @Test
     void getAllHeroes() {
-        List<Hero> heroes = heroService.getAllHeroes();
+        List<HeroDto> heroes = heroService.getAllHeroes();
         assertThat(heroes.size()).isEqualTo(2);
     }
 
     @Test
     void findHeroesByName() {
-        List<Hero> heroes = heroService.findHeroesByName("o");
+        List<HeroDto> heroes = heroService.findHeroesByName("o");
         assertThat(heroes.size()).isEqualTo(2);
     }
 }

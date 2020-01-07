@@ -1,6 +1,7 @@
 package org.itrunner.heroes;
 
 import org.itrunner.heroes.domain.Hero;
+import org.itrunner.heroes.dto.HeroDto;
 import org.itrunner.heroes.exception.ErrorMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,17 +52,17 @@ class HeroesApplicationTests {
 
     @Test
     void crudSuccess() {
-        Hero hero = new Hero();
+        HeroDto hero = new HeroDto();
         hero.setName("Jack");
 
         // add hero
-        hero = restTemplate.postForObject("/api/heroes", hero, Hero.class);
+        hero = restTemplate.postForObject("/api/heroes", hero, HeroDto.class);
         assertThat(hero.getId()).isNotNull();
 
         // update hero
         hero.setName("Jacky");
-        HttpEntity<Hero> requestEntity = new HttpEntity<>(hero);
-        hero = restTemplate.exchange("/api/heroes", HttpMethod.PUT, requestEntity, Hero.class).getBody();
+        HttpEntity<HeroDto> requestEntity = new HttpEntity<>(hero);
+        hero = restTemplate.exchange("/api/heroes", HttpMethod.PUT, requestEntity, HeroDto.class).getBody();
         assertThat(hero.getName()).isEqualTo("Jacky");
 
         // find heroes by name
@@ -71,7 +72,7 @@ class HeroesApplicationTests {
         assertThat(heroes.size()).isEqualTo(5);
 
         // get hero by id
-        hero = restTemplate.getForObject("/api/heroes/" + hero.getId(), Hero.class);
+        hero = restTemplate.getForObject("/api/heroes/" + hero.getId(), HeroDto.class);
         assertThat(hero.getName()).isEqualTo("Jacky");
 
         // delete hero successfully
@@ -85,7 +86,7 @@ class HeroesApplicationTests {
 
     @Test
     void addHeroValidationFailed() {
-        Hero hero = new Hero();
+        HeroDto hero = new HeroDto();
         ResponseEntity<ErrorMessage> responseEntity = restTemplate.postForEntity("/api/heroes", hero, ErrorMessage.class);
         assertThat(responseEntity.getStatusCodeValue()).isEqualTo(400);
         assertThat(responseEntity.getBody().getError()).isEqualTo("MethodArgumentNotValidException");

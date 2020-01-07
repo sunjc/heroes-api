@@ -6,6 +6,22 @@ spring:
     image:
       location: classpath:banner.jpg
     location: classpath:banner.txt
+  mail:
+    host: smtp.office365.com
+    port: 587
+    username: username
+    password: password
+    protocol: smtp
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 50000
+          timeout: 30000
+          writetimeout: 50000
   messages:
     encoding: UTF-8
     basename: messages
