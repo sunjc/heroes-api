@@ -51,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/api-docs", "/swagger-resources/**", "/swagger-ui.html**", "/webjars/**");
+        web.ignoring().antMatchers(securityProperties.getIgnorePaths());
     }
 
     @Override
@@ -66,7 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and() // don't create session
                 .authorizeRequests()
                 .requestMatchers(EndpointRequest.to(actuatorExposures)).permitAll()
-                .antMatchers(securityProperties.getJwt().getAuthenticationPath()).permitAll()
+                .antMatchers(securityProperties.getAuthPath()).permitAll()
                 .antMatchers(OPTIONS, "/**").permitAll()
                 .antMatchers(POST, apiPath).hasRole(ROLE_ADMIN)
                 .antMatchers(PUT, apiPath).hasRole(ROLE_ADMIN)

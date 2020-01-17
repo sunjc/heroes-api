@@ -33,11 +33,22 @@ springfox:
     swagger:
       v2:
         path: /api-docs
+      title: Api Documentation
+      description: Api Documentation
+      version: 1.0
+      base-package: org.itrunner.heroes.controller
+      api-path: /api/.*
+      contact:
+        name: Jason
+        url: http://blog.51cto.com/7308310
+        email: sjc-925@163.com
 
 api:
   base-path: /api
 
 security:
+  ignore-paths: /api-docs,/swagger-resources/**,/swagger-ui.html**,/webjars/**
+  auth-path: /api/auth
   cors:
     allowed-origins: "*"
     allowed-methods: GET,POST,DELETE,PUT,OPTIONS
@@ -47,4 +58,3 @@ security:
     secret: mySecret
     expiration: 7200
     issuer: ITRunner
-    authentication-path: /api/auth

@@ -1,5 +1,6 @@
 package org.itrunner.heroes.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.itrunner.heroes.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Slf4j
 public class AuthenticationTokenFilter extends OncePerRequestFilter {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -27,15 +29,20 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 
         if (authToken != null && authToken.startsWith("Bearer ")) {
             authToken = authToken.substring(7);
-        }
 
-        UserDetails user = jwtTokenUtil.verify(authToken);
+            try {
+                UserDetails user = jwtTokenUtil.verify(authToken);
 
-        if (user != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            logger.info("checking authentication for user " + user.getUsername());
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), "N/A", user.getAuthorities());
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                    logger.info("checking authentication for user " + user.getUsername());
+
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), "N/A", user.getAuthorities());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            } catch (Exception e) {
+                logger.error(e);
+            }
         }
 
         chain.doFilter(request, response);

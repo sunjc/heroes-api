@@ -3,6 +3,7 @@ package org.itrunner.heroes.util;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
 import org.itrunner.heroes.config.SecurityProperties;
@@ -17,20 +18,17 @@ import java.util.Date;
 @Slf4j
 public class JwtTokenUtil {
     private static final String CLAIM_AUTHORITIES = "authorities";
-    private final SecurityProperties.Jwt jwtProperties;
 
     @Autowired
-    public JwtTokenUtil(SecurityProperties securityProperties) {
-        this.jwtProperties = securityProperties.getJwt();
-    }
+    private SecurityProperties securityProperties;
 
     public String generate(UserDetails user) {
         try {
-            Algorithm algorithm = Algorithm.HMAC256(jwtProperties.getSecret());
+            Algorithm algorithm = Algorithm.HMAC256(securityProperties.getJwt().getSecret());
             return JWT.create()
-                    .withIssuer(jwtProperties.getIssuer())
+                    .withIssuer(securityProperties.getJwt().getIssuer())
                     .withIssuedAt(new Date())
-                    .withExpiresAt(new Date(System.currentTimeMillis() + jwtProperties.getExpiration() * 1000))
+                    .withExpiresAt(new Date(System.currentTimeMillis() + securityProperties.getJwt().getExpiration() * 1000))
                     .withSubject(user.getUsername())
                     .withArrayClaim(CLAIM_AUTHORITIES, AuthorityUtil.getAuthorities(user))
                     .sign(algorithm);
@@ -41,17 +39,12 @@ public class JwtTokenUtil {
 
     public UserDetails verify(String token) {
         if (token == null) {
-            return null;
+            throw new JWTVerificationException("token should not be null");
         }
 
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(jwtProperties.getSecret());
-            JWTVerifier verifier = JWT.require(algorithm).withIssuer(jwtProperties.getIssuer()).build();
-            DecodedJWT jwt = verifier.verify(token);
-            return new User(jwt.getSubject(), "N/A", AuthorityUtil.createGrantedAuthorities(jwt.getClaim(CLAIM_AUTHORITIES).asArray(String.class)));
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return null;
-        }
+        Algorithm algorithm = Algorithm.HMAC256(securityProperties.getJwt().getSecret());
+        JWTVerifier verifier = JWT.require(algorithm).withIssuer(securityProperties.getJwt().getIssuer()).build();
+        DecodedJWT jwt = verifier.verify(token);
+        return new User(jwt.getSubject(), "N/A", AuthorityUtil.createGrantedAuthorities(jwt.getClaim(CLAIM_AUTHORITIES).asArray(String.class)));
     }
 }
