@@ -9,6 +9,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,16 +27,14 @@ public class HeroServiceTest {
     @InjectMocks
     private HeroService heroService;
 
-    private List<Hero> heroes;
-
     @Before
     public void setup() {
-        heroes = new ArrayList<>();
+        List<Hero> heroes = new ArrayList<>();
         heroes.add(new Hero(1L, "Rogue"));
         heroes.add(new Hero(2L, "Jason"));
 
         given(heroRepository.findById(1L)).willReturn(Optional.of(heroes.get(0)));
-        given(heroRepository.findAll()).willReturn(heroes);
+        given(heroRepository.findAll(PageRequest.of(0, 10))).willReturn(Page.empty());
         given(heroRepository.findByName("o")).willReturn(heroes);
     }
 
@@ -46,8 +46,8 @@ public class HeroServiceTest {
 
     @Test
     public void getAllHeroes() {
-        List<HeroDto> heroes = heroService.getAllHeroes();
-        assertThat(heroes.size()).isEqualTo(2);
+        Page<HeroDto> heroes = heroService.getAllHeroes(PageRequest.of(0, 10));
+        assertThat(heroes.getTotalElements()).isEqualTo(0);
     }
 
     @Test

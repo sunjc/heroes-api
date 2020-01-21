@@ -1,6 +1,5 @@
 package org.itrunner.heroes.domain;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedBy;
@@ -15,7 +14,6 @@ import java.util.Date;
 @Entity
 @Data
 @NoArgsConstructor
-@JsonPropertyOrder({"id", "name"})
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "HERO", uniqueConstraints = {@UniqueConstraint(name = "UK_HERO_NAME", columnNames = {"HERO_NAME"})})
 public class Hero {
