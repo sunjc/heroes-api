@@ -1,14 +1,19 @@
 package org.itrunner.heroes.service;
 
 import org.itrunner.heroes.domain.Hero;
+import org.itrunner.heroes.dto.HeroDto;
 import org.itrunner.heroes.exception.HeroNotFoundException;
 import org.itrunner.heroes.repository.HeroRepository;
 import org.itrunner.heroes.util.Messages;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static org.itrunner.heroes.mapper.HeroMapper.MAPPER;
 
 @Service
 @Transactional
@@ -22,20 +27,25 @@ public class HeroService {
         this.messages = messages;
     }
 
-    public Hero getHeroById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new HeroNotFoundException(messages.getMessage("hero.notFound", new Object[]{id})));
+    public HeroDto getHeroById(Long id) {
+        Hero hero = repository.findById(id).orElseThrow(() -> new HeroNotFoundException(messages.getMessage("hero.notFound", new Object[]{id})));
+        return MAPPER.toHeroDto(hero);
     }
 
-    public List<Hero> getAllHeroes() {
-        return repository.findAll();
+    public Page<HeroDto> getAllHeroes(Pageable pageable) {
+        Page<Hero> heroes = repository.findAll(pageable);
+        return MAPPER.toHeroDtoPage(heroes);
     }
 
-    public List<Hero> findHeroesByName(String name) {
-        return repository.findByName(name);
+    public List<HeroDto> findHeroesByName(String name) {
+        List<Hero> heroes = repository.findByName(name);
+        return MAPPER.toHeroDtos(heroes);
     }
 
-    public Hero saveHero(Hero hero) {
-        return repository.save(hero);
+    public HeroDto saveHero(HeroDto heroDto) {
+        Hero hero = MAPPER.toHero(heroDto);
+        hero = repository.save(hero);
+        return MAPPER.toHeroDto(hero);
     }
 
     public void deleteHero(Long id) {

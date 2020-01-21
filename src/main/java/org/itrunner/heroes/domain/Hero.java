@@ -10,8 +10,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
@@ -27,8 +25,6 @@ public class Hero {
     @SequenceGenerator(name = "HERO_SEQ", sequenceName = "HERO_SEQ", allocationSize = 1)
     private Long id;
 
-    @NotNull
-    @Size(min = 3, max = 30)
     @Column(name = "HERO_NAME", length = 30, nullable = false)
     private String name;
 
