@@ -38,10 +38,10 @@ Install and Configure Keycloak
     		<pool>
     		   <max-pool-size>20</max-pool-size>
     		</pool>
-               <security>
-                   <user-name>postgre</user-name>
-                   <password>password</password>
-               </security>
+            <security>
+                <user-name>postgre</user-name>
+                <password>password</password>
+            </security>
            </datasource>
           ​<drivers>
              ​<driver name="postgresql" module="org.postgresql">
