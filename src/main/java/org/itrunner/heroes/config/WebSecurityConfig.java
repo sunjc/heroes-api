@@ -37,7 +37,7 @@ public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     @Value("${management.endpoints.web.exposure.include}")
     private String[] actuatorExposures;
 
-    public final KeycloakClientRequestFactory keycloakClientRequestFactory;
+    private final KeycloakClientRequestFactory keycloakClientRequestFactory;
 
     public WebSecurityConfig(KeycloakClientRequestFactory keycloakClientRequestFactory) {
         this.keycloakClientRequestFactory = keycloakClientRequestFactory;

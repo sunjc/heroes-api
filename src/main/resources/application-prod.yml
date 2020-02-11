@@ -34,6 +34,6 @@ keycloak:
   realm: heroes
   resource: heroes
   public-client: true
-  ssl-required: all
-  disable-trust-manager: true
   bearer-only: true
+  ssl-required: all
+  disable-trust-manager: false
