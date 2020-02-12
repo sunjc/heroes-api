@@ -31,6 +31,7 @@
     </dependencies>
 </module>
 ```
+
     Declare Your JDBC Drivers and Modify the Keycloak Datasource:
     
 ```
@@ -111,7 +112,10 @@ Login keycloak https://sso.itrunner.org/auth
 
     * Name: heroes
     * Display name: Heroes SSO
-    * HTML Display name: <div class="kc-logo-text"><span>Heroes SSO</span></div>
+    * HTML Display name: 
+    ```
+    <div class="kc-logo-text"><span>Heroes SSO</span></div>
+    ```
 	* Login > Require SSL: external requests
 	* Themes > Internationalization Enabled: ON
 
