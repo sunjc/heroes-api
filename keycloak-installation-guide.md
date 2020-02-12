@@ -1,20 +1,22 @@
-Install and Configure Keycloak
+# Install and Configure Keycloak
 
 1. Create a keycloak user
-
+```
     # groupadd -r keycloak
     # useradd -r -g keycloak -d /opt/keycloak -s /sbin/nologin keycloak
+```    
 
 2. Install keycloak
 
+```
     # unzip keycloak-8.0.1.zip
     # ln -s /opt/keycloak-8.0.1 /opt/keycloak
     # chown -R keycloak:keycloak /opt/keycloak /opt/keycloak-8.0.1
-
+```
 3. Configure datasource
 
     For PostgreSQL, create the directory org/postgresql/main in the modules/system/layers/keycloak/ directory. Copy your database driver JAR into this directory and create an module.xml file within it too:
-
+```
     <?xml version="1.0" ?>
     <module xmlns="urn:jboss:module:1.3" name="org.postgresql">
         <resources>
@@ -26,9 +28,9 @@ Install and Configure Keycloak
             <module name="javax.transaction.api"/>
         </dependencies>
     </module>
-
+```
     Declare Your JDBC Drivers and Modify the Keycloak Datasource:
-
+```
     ​<subsystem xmlns="urn:jboss:domain:datasources:5.0">
         ​<datasources>
           ...
@@ -53,26 +55,26 @@ Install and Configure Keycloak
           ​</drivers>
         ​</datasources>
     ​</subsystem>
-
+```
 4. Configure systemd
-
+```
     # mkdir /etc/keycloak
     # cp /opt/keycloak/docs/contrib/scripts/systemd/wildfly.conf /etc/keycloak/keycloak.conf
     # cp /opt/keycloak/docs/contrib/scripts/systemd/wildfly.service /etc/systemd/system/keycloak.service
     # cp /opt/keycloak/docs/contrib/scripts/systemd/launch.sh /opt/keycloak/bin/
     # chmod +x /opt/keycloak/bin/launch.sh
-
+```
 5. Start and enable keycloak
-
+```
     # systemctl start keycloak.service
     # systemctl enable keycloak.service
-
+```
 6. Add keycloak user
-
+```
     # /opt/keycloak/bin/add-user-keycloak.sh -u admin
-
+```
 7. Configure Apache HTTP Server  (Optional)
-
+```
     ServerTokens Prod
     Header always set Strict-Transport-Security "max-age=8640000; includeSubDomains; preload"
     Header always append X-Frame-Options SAMEORIGIN
@@ -99,7 +101,7 @@ Install and Configure Keycloak
         ProxyPass /auth http://127.0.0.1:8080/auth timeout=600
         ProxyPassReverse /auth http://127.0.0.1:8080/auth
     </VirtualHost>
-
+```
 Login keycloak https://sso.itrunner.org/auth
 
 8. Add Realm
