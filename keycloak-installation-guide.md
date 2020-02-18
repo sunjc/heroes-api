@@ -1,13 +1,13 @@
 # Install and Configure Keycloak
 
-1. Create a keycloak user
+* Create a keycloak user
 
 ```
 # groupadd -r keycloak
 # useradd -r -g keycloak -d /opt/keycloak -s /sbin/nologin keycloak
 ```    
 
-2. Install keycloak
+* Install keycloak
 
 ```
 # unzip keycloak-8.0.1.zip
@@ -15,7 +15,7 @@
 # chown -R keycloak:keycloak /opt/keycloak /opt/keycloak-8.0.1
 ```
 
-3. Configure datasource
+* Configure datasource
 
     For PostgreSQL, create the directory org/postgresql/main in the modules/system/layers/keycloak/ directory. Copy your database driver JAR into this directory and create an module.xml file within it too:
 ```
@@ -60,7 +60,25 @@
    ​</datasources>
 </subsystem>
 ```
-4. Configure systemd
+* Configure Keycloak for Apache (Optional)
+
+```
+ <server name="default-server">
+    <http-listener name="default" socket-binding="http" proxy-address-forwarding="true" redirect-socket="proxy-https"/>
+    ...
+</server>
+
+...
+
+<socket-binding-group name="standard-sockets" default-interface="public" port-offset="${jboss.socket.binding.port-offset:0}">
+    ...
+    <socket-binding name="proxy-https" port="443"/>
+    ...
+</socket-binding-group>
+```
+
+* Configure systemd
+
 ```
 # mkdir /etc/keycloak
 # cp /opt/keycloak/docs/contrib/scripts/systemd/wildfly.conf /etc/keycloak/keycloak.conf
@@ -68,16 +86,19 @@
 # cp /opt/keycloak/docs/contrib/scripts/systemd/launch.sh /opt/keycloak/bin/
 # chmod +x /opt/keycloak/bin/launch.sh
 ```
-5. Start and enable keycloak
+* Start and enable keycloak
+
 ```
 # systemctl start keycloak.service
 # systemctl enable keycloak.service
 ```
-6. Add keycloak user
+* Add keycloak user
+
 ```
 # /opt/keycloak/bin/add-user-keycloak.sh -u admin
 ```
-7. Configure Apache HTTP Server  (Optional)
+* Configure Apache HTTP Server  (Optional)
+
 ```
 ServerTokens Prod
 Header always set Strict-Transport-Security "max-age=8640000; includeSubDomains; preload"
@@ -108,7 +129,7 @@ Header always append X-Frame-Options SAMEORIGIN
 ```
 Login keycloak https://sso.itrunner.org/auth
 
-8. Add Realm
+* Add Realm
 
     * Name: heroes
     * Display name: Heroes SSO
@@ -119,7 +140,7 @@ Login keycloak https://sso.itrunner.org/auth
 	* Login > Require SSL: external requests
 	* Themes > Internationalization Enabled: ON
 
-9. Add Client
+* Add Client
 
     * Client ID: heroes
     * Standard Flow Enabled: ON
@@ -128,7 +149,7 @@ Login keycloak https://sso.itrunner.org/auth
     * Valid Redirect URIs: https://heroes.itrunner.org/*
     * Web Origins: heroes.itrunner.org
 
-10. Add SAML 2.0 identity provider
+* Add SAML 2.0 identity provider
 
     **ADFS**
 
@@ -167,4 +188,4 @@ Login keycloak https://sso.itrunner.org/auth
 	* Friendly Name: email
 	* User Attribute Name: email
 
-11. Add user and role
+* Add user and role
