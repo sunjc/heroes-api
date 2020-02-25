@@ -4,9 +4,8 @@ import org.itrunner.heroes.controller.AuthenticationRequest;
 import org.itrunner.heroes.controller.AuthenticationResponse;
 import org.itrunner.heroes.dto.HeroDto;
 import org.itrunner.heroes.exception.ErrorMessage;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -15,7 +14,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,14 +22,13 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class HeroesApplicationTests {
+class HeroesApplicationTests {
 
     @Autowired
     private TestRestTemplate restTemplate;
 
-    @Before
+    @BeforeEach
     public void setup() {
         AuthenticationRequest authenticationRequest = new AuthenticationRequest();
         authenticationRequest.setUsername("admin");

@@ -1,19 +1,17 @@
 package org.itrunner.heroes.util;
 
 import org.itrunner.heroes.config.SecurityProperties;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
-@RunWith(MockitoJUnitRunner.class)
 public class JwtTokenUtilTest {
     @Mock
     private SecurityProperties securityProperties;
@@ -21,8 +19,10 @@ public class JwtTokenUtilTest {
     @InjectMocks
     private JwtTokenUtil jwtTokenUtil;
 
-    @Before
+    @BeforeEach
     public void setup() {
+        MockitoAnnotations.initMocks(this);
+
         SecurityProperties.Jwt jwtConfig = new SecurityProperties.Jwt();
         jwtConfig.setIssuer("ITRunner");
         jwtConfig.setSecret("mySecret");

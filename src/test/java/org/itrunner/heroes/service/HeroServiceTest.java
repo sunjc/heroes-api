@@ -3,12 +3,11 @@ package org.itrunner.heroes.service;
 import org.itrunner.heroes.domain.Hero;
 import org.itrunner.heroes.dto.HeroDto;
 import org.itrunner.heroes.repository.HeroRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -19,16 +18,17 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
-@RunWith(MockitoJUnitRunner.class)
-public class HeroServiceTest {
+class HeroServiceTest {
     @Mock
     private HeroRepository heroRepository;
 
     @InjectMocks
     private HeroService heroService;
 
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setup() {
+        MockitoAnnotations.initMocks(this);
+
         List<Hero> heroes = new ArrayList<>();
         heroes.add(new Hero(1L, "Rogue"));
         heroes.add(new Hero(2L, "Jason"));
@@ -39,19 +39,19 @@ public class HeroServiceTest {
     }
 
     @Test
-    public void getHeroById() {
+    void getHeroById() {
         HeroDto hero = heroService.getHeroById(1L);
         assertThat(hero.getName()).isEqualTo("Rogue");
     }
 
     @Test
-    public void getAllHeroes() {
+    void getAllHeroes() {
         Page<HeroDto> heroes = heroService.getAllHeroes(PageRequest.of(0, 10));
         assertThat(heroes.getTotalElements()).isEqualTo(0);
     }
 
     @Test
-    public void findHeroesByName() {
+    void findHeroesByName() {
         List<HeroDto> heroes = heroService.findHeroesByName("o");
         assertThat(heroes.size()).isEqualTo(2);
     }
