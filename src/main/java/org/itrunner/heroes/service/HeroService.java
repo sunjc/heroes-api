@@ -16,7 +16,7 @@ import java.util.List;
 import static org.itrunner.heroes.mapper.HeroMapper.MAPPER;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class HeroService {
     private final HeroRepository repository;
     private final Messages messages;
@@ -42,12 +42,14 @@ public class HeroService {
         return MAPPER.toHeroDtos(heroes);
     }
 
+    @Transactional
     public HeroDto saveHero(HeroDto heroDto) {
         Hero hero = MAPPER.toHero(heroDto);
         hero = repository.save(hero);
         return MAPPER.toHeroDto(hero);
     }
 
+    @Transactional
     public void deleteHero(Long id) {
         repository.deleteById(id);
     }

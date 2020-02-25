@@ -5,9 +5,9 @@ import org.itrunner.heroes.dto.HeroDto;
 import org.itrunner.heroes.repository.HeroRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -18,16 +18,17 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
-@SpringBootTest
 class HeroServiceTest {
-    @MockBean
+    @Mock
     private HeroRepository heroRepository;
 
-    @Autowired
+    @InjectMocks
     private HeroService heroService;
 
     @BeforeEach
     void setup() {
+        MockitoAnnotations.initMocks(this);
+
         List<Hero> heroes = new ArrayList<>();
         heroes.add(new Hero(1L, "Rogue"));
         heroes.add(new Hero(2L, "Jason"));
