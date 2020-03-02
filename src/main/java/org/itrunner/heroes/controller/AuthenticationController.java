@@ -18,6 +18,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping(value = "${api.base-path}", produces = MediaType.APPLICATION_JSON_VALUE)
 @Api(tags = {"Authentication Controller"})
@@ -36,7 +38,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/auth")
-    public AuthenticationResponse login(@RequestBody AuthenticationRequest request) {
+    public AuthenticationResponse login(@RequestBody @Valid AuthenticationRequest request) {
         // Perform the security
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
