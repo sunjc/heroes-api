@@ -2,6 +2,8 @@ package org.itrunner.heroes.controller;
 
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import org.itrunner.heroes.dto.AuthenticationRequest;
+import org.itrunner.heroes.dto.AuthenticationResponse;
 import org.itrunner.heroes.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -39,9 +41,8 @@ public class AuthenticationController {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // Reload user details so we can generate token
-        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
-        String token = jwtTokenUtil.generate(userDetails);
+        // Generate token
+        String token = jwtTokenUtil.generate((UserDetails) authentication.getPrincipal());
 
         // Return the token
         return new AuthenticationResponse(token);

@@ -1,7 +1,7 @@
 package org.itrunner.heroes;
 
-import org.itrunner.heroes.controller.AuthenticationRequest;
-import org.itrunner.heroes.controller.AuthenticationResponse;
+import org.itrunner.heroes.dto.AuthenticationRequest;
+import org.itrunner.heroes.dto.AuthenticationResponse;
 import org.itrunner.heroes.dto.HeroDto;
 import org.itrunner.heroes.exception.ErrorMessage;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,4 +1,4 @@
-package org.itrunner.heroes.controller;
+package org.itrunner.heroes.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
