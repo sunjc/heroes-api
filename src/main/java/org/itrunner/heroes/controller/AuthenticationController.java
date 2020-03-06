@@ -4,7 +4,7 @@ import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.itrunner.heroes.dto.AuthenticationRequest;
 import org.itrunner.heroes.dto.AuthenticationResponse;
-import org.itrunner.heroes.util.JwtTokenUtil;
+import org.itrunner.heroes.util.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -26,14 +26,14 @@ import javax.validation.Valid;
 @Slf4j
 public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
-    private final JwtTokenUtil jwtTokenUtil;
+    private final JwtUtils jwtUtils;
     private final UserDetailsService userDetailsService;
 
     @Autowired
-    public AuthenticationController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil,
+    public AuthenticationController(AuthenticationManager authenticationManager, JwtUtils jwtUtils,
                                     @Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
         this.authenticationManager = authenticationManager;
-        this.jwtTokenUtil = jwtTokenUtil;
+        this.jwtUtils = jwtUtils;
         this.userDetailsService = userDetailsService;
     }
 
@@ -44,7 +44,7 @@ public class AuthenticationController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // Generate token
-        String token = jwtTokenUtil.generate((UserDetails) authentication.getPrincipal());
+        String token = jwtUtils.generate((UserDetails) authentication.getPrincipal());
 
         // Return the token
         return new AuthenticationResponse(token);

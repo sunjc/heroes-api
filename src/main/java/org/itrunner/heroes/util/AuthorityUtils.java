@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public final class AuthorityUtil {
+public final class AuthorityUtils {
 
-    private AuthorityUtil() {
+    private AuthorityUtils() {
     }
 
     public static List<GrantedAuthority> createGrantedAuthorities(List<Authority> authorities) {

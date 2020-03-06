@@ -16,7 +16,7 @@ import java.util.Date;
 
 @Component
 @Slf4j
-public class JwtTokenUtil {
+public class JwtUtils {
     private static final String CLAIM_AUTHORITIES = "authorities";
 
     @Autowired
@@ -30,7 +30,7 @@ public class JwtTokenUtil {
                     .withIssuedAt(new Date())
                     .withExpiresAt(new Date(System.currentTimeMillis() + securityProperties.getJwt().getExpiration() * 1000))
                     .withSubject(user.getUsername())
-                    .withArrayClaim(CLAIM_AUTHORITIES, AuthorityUtil.getAuthorities(user))
+                    .withArrayClaim(CLAIM_AUTHORITIES, AuthorityUtils.getAuthorities(user))
                     .sign(algorithm);
         } catch (IllegalArgumentException e) {
             return null;
@@ -45,6 +45,6 @@ public class JwtTokenUtil {
         Algorithm algorithm = Algorithm.HMAC256(securityProperties.getJwt().getSecret());
         JWTVerifier verifier = JWT.require(algorithm).withIssuer(securityProperties.getJwt().getIssuer()).build();
         DecodedJWT jwt = verifier.verify(token);
-        return new User(jwt.getSubject(), "N/A", AuthorityUtil.createGrantedAuthorities(jwt.getClaim(CLAIM_AUTHORITIES).asArray(String.class)));
+        return new User(jwt.getSubject(), "N/A", AuthorityUtils.createGrantedAuthorities(jwt.getClaim(CLAIM_AUTHORITIES).asArray(String.class)));
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import static org.itrunner.heroes.util.AuthorityUtil.createGrantedAuthorities;
+import static org.itrunner.heroes.util.AuthorityUtils.createGrantedAuthorities;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {

@@ -1,7 +1,7 @@
 package org.itrunner.heroes.config;
 
 import lombok.extern.slf4j.Slf4j;
-import org.itrunner.heroes.util.JwtTokenUtil;
+import org.itrunner.heroes.util.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +18,7 @@ import java.io.IOException;
 @Slf4j
 public class AuthenticationTokenFilter extends OncePerRequestFilter {
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private JwtUtils jwtUtils;
 
     @Autowired
     private SecurityProperties securityProperties;
@@ -31,7 +31,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
             authToken = authToken.substring(7);
 
             try {
-                UserDetails user = jwtTokenUtil.verify(authToken);
+                UserDetails user = jwtUtils.verify(authToken);
 
                 if (SecurityContextHolder.getContext().getAuthentication() == null) {
                     logger.info("checking authentication for user " + user.getUsername());
