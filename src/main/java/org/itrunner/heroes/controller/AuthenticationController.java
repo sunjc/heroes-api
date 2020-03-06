@@ -6,7 +6,6 @@ import org.itrunner.heroes.dto.AuthenticationRequest;
 import org.itrunner.heroes.dto.AuthenticationResponse;
 import org.itrunner.heroes.util.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,29 +14,25 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "${api.base-path}", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/auth", produces = MediaType.APPLICATION_JSON_VALUE)
 @Api(tags = {"Authentication Controller"})
 @Slf4j
 public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
-    private final UserDetailsService userDetailsService;
 
     @Autowired
-    public AuthenticationController(AuthenticationManager authenticationManager, JwtUtils jwtUtils,
-                                    @Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
+    public AuthenticationController(AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
-        this.userDetailsService = userDetailsService;
     }
 
-    @PostMapping("/auth")
+    @PostMapping
     public AuthenticationResponse login(@RequestBody @Valid AuthenticationRequest request) {
         // Perform the security
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
