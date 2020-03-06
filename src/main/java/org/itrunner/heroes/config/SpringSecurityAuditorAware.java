@@ -10,6 +10,6 @@ import java.util.Optional;
 public class SpringSecurityAuditorAware implements AuditorAware<String> {
     @Override
     public Optional<String> getCurrentAuditor() {
-        return Optional.ofNullable((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 }
