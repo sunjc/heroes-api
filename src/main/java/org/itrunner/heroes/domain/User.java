@@ -1,7 +1,6 @@
 package org.itrunner.heroes.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -9,8 +8,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Table(name = "USERS", uniqueConstraints = {
         @UniqueConstraint(name = "UK_USERS_USERNAME", columnNames = {"USERNAME"}),
         @UniqueConstraint(name = "UK_USERS_EMAIL", columnNames = {"EMAIL"})})
