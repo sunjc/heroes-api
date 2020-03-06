@@ -29,7 +29,7 @@ class HeroesApplicationTests {
     private TestRestTemplate restTemplate;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         AuthenticationRequest authenticationRequest = new AuthenticationRequest();
         authenticationRequest.setUsername("admin");
         authenticationRequest.setPassword("admin");
@@ -45,7 +45,7 @@ class HeroesApplicationTests {
     }
 
     @Test
-    public void loginFailure() {
+    void loginFailure() {
         AuthenticationRequest request = new AuthenticationRequest();
         request.setUsername("admin");
         request.setPassword("111111");
@@ -54,7 +54,7 @@ class HeroesApplicationTests {
     }
 
     @Test
-    public void crudSuccess() {
+    void crudSuccess() {
         HeroDto hero = new HeroDto();
         hero.setName("Jack");
 
@@ -88,7 +88,7 @@ class HeroesApplicationTests {
     }
 
     @Test
-    public void addHeroValidationFailed() {
+    void addHeroValidationFailed() {
         HeroDto hero = new HeroDto();
         ResponseEntity<ErrorMessage> responseEntity = restTemplate.postForEntity("/api/heroes", hero, ErrorMessage.class);
         assertThat(responseEntity.getStatusCodeValue()).isEqualTo(400);
