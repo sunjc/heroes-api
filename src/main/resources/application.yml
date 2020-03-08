@@ -63,4 +63,4 @@ security:
     header: Authorization
     secret: mySecret
     expiration: 7200
-    issuer: ITRunner
+    issuer: iTRunner
