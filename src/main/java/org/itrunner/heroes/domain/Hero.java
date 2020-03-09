@@ -1,6 +1,5 @@
 package org.itrunner.heroes.domain;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedBy;
@@ -15,7 +14,6 @@ import java.util.Date;
 @Entity
 @Data
 @NoArgsConstructor
-@JsonPropertyOrder({"id", "name"})
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "HERO", uniqueConstraints = {@UniqueConstraint(name = "UK_HERO_NAME", columnNames = {"HERO_NAME"})})
 public class Hero {
@@ -28,23 +26,23 @@ public class Hero {
     @Column(name = "HERO_NAME", length = 30, nullable = false)
     private String name;
 
-    @Column(name = "CREATE_BY", length = 50, updatable = false, nullable = false)
+    @Column(name = "CREATED_BY", length = 50, updatable = false, nullable = false)
     @CreatedBy
-    private String createBy;
+    private String createdBy;
 
-    @Column(name = "CREATE_TIME", updatable = false, nullable = false)
+    @Column(name = "CREATED_DATE", updatable = false, nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
-    private Date createTime;
+    private Date createdDate;
 
     @Column(name = "LAST_MODIFIED_BY", length = 50)
     @LastModifiedBy
     private String lastModifiedBy;
 
-    @Column(name = "LAST_MODIFIED_TIME")
+    @Column(name = "LAST_MODIFIED_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
-    private Date lastModifiedTime;
+    private Date lastModifiedDate;
 
     public Hero(Long id, String name) {
         this.id = id;
