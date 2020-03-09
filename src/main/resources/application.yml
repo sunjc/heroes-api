@@ -39,18 +39,24 @@ spring:
 management:
   server:
     port: 8180
+    address: 127.0.0.1
   endpoints:
     web:
       base-path: /actuator
       exposure:
-        include: health,info
+        include: env,health,info,mappings
   endpoint:
     health:
       show-details: always
+      show-components: always
 info:
   app:
     name: heroes
     version: 1.0
+    encoding: @project.build.sourceEncoding@
+    java:
+     source: @java.version@
+     target: @java.version@
 
 springfox:
   documentation:
