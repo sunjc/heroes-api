@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import static org.itrunner.heroes.util.AuthorityUtils.createGrantedAuthorities;
+import static org.itrunner.heroes.util.AuthorityUtils.toGrantedAuthorities;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -26,6 +26,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     private static org.springframework.security.core.userdetails.User create(User user) {
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), createGrantedAuthorities(user.getAuthorities()));
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), toGrantedAuthorities(user.getAuthorities()));
     }
 }

@@ -1,6 +1,7 @@
 package org.itrunner.heroes.util;
 
 import org.itrunner.heroes.config.SecurityProperties;
+import org.itrunner.heroes.service.JwtService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -12,12 +13,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
-public class JwtUtilsTest {
+public class JwtServiceTest {
     @Mock
     private SecurityProperties securityProperties;
 
     @InjectMocks
-    private JwtUtils jwtUtils;
+    private JwtService jwtService;
 
     @BeforeEach
     public void setup() {
@@ -33,8 +34,8 @@ public class JwtUtilsTest {
 
     @Test
     public void generate_token() {
-        UserDetails user = new User("Jason", "N/A", AuthorityUtils.createGrantedAuthorities("ADMIN"));
-        String token = jwtUtils.generate(user);
-        assertThat(jwtUtils.verify(token).getUsername()).isEqualTo("Jason");
+        UserDetails user = new User("Jason", "N/A", AuthorityUtils.toGrantedAuthorities("ADMIN"));
+        String token = jwtService.generate(user);
+        assertThat(jwtService.verify(token).getUsername()).isEqualTo("Jason");
     }
 }

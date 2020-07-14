@@ -4,7 +4,7 @@ import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.itrunner.heroes.dto.AuthenticationRequest;
 import org.itrunner.heroes.dto.AuthenticationResponse;
-import org.itrunner.heroes.util.JwtUtils;
+import org.itrunner.heroes.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,12 +24,12 @@ import javax.validation.Valid;
 @Slf4j
 public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
-    private final JwtUtils jwtUtils;
+    private final JwtService jwtService;
 
     @Autowired
-    public AuthenticationController(AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
+    public AuthenticationController(AuthenticationManager authenticationManager, JwtService jwtService) {
         this.authenticationManager = authenticationManager;
-        this.jwtUtils = jwtUtils;
+        this.jwtService = jwtService;
     }
 
     @PostMapping
@@ -39,7 +39,7 @@ public class AuthenticationController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // Generate token
-        String token = jwtUtils.generate((UserDetails) authentication.getPrincipal());
+        String token = jwtService.generate((UserDetails) authentication.getPrincipal());
 
         // Return the token
         return new AuthenticationResponse(token);

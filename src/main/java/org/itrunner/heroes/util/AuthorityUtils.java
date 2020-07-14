@@ -14,11 +14,11 @@ public final class AuthorityUtils {
     private AuthorityUtils() {
     }
 
-    public static List<GrantedAuthority> createGrantedAuthorities(List<Authority> authorities) {
+    public static List<GrantedAuthority> toGrantedAuthorities(List<Authority> authorities) {
         return authorities.stream().map(authority -> new SimpleGrantedAuthority(authority.getName().name())).collect(Collectors.toList());
     }
 
-    public static List<GrantedAuthority> createGrantedAuthorities(String... authorities) {
+    public static List<GrantedAuthority> toGrantedAuthorities(String... authorities) {
         return Stream.of(authorities).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 

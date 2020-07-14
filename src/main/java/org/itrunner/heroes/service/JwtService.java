@@ -1,4 +1,4 @@
-package org.itrunner.heroes.util;
+package org.itrunner.heroes.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -7,20 +7,25 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
 import org.itrunner.heroes.config.SecurityProperties;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.itrunner.heroes.util.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
-@Component
+import static org.itrunner.heroes.util.AuthorityUtils.toGrantedAuthorities;
+
+@Service
 @Slf4j
-public class JwtUtils {
+public class JwtService {
     private static final String CLAIM_AUTHORITIES = "authorities";
 
-    @Autowired
-    private SecurityProperties securityProperties;
+    private final SecurityProperties securityProperties;
+
+    public JwtService(SecurityProperties securityProperties) {
+        this.securityProperties = securityProperties;
+    }
 
     public String generate(UserDetails user) {
         try {
@@ -45,6 +50,6 @@ public class JwtUtils {
         Algorithm algorithm = Algorithm.HMAC256(securityProperties.getJwt().getSecret());
         JWTVerifier verifier = JWT.require(algorithm).withIssuer(securityProperties.getJwt().getIssuer()).build();
         DecodedJWT jwt = verifier.verify(token);
-        return new User(jwt.getSubject(), "N/A", AuthorityUtils.createGrantedAuthorities(jwt.getClaim(CLAIM_AUTHORITIES).asArray(String.class)));
+        return new User(jwt.getSubject(), "N/A", toGrantedAuthorities(jwt.getClaim(CLAIM_AUTHORITIES).asArray(String.class)));
     }
 }
