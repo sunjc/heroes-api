@@ -1,7 +1,6 @@
 package org.itrunner.heroes.exception;
 
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,7 +24,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler({
             EntityNotFoundException.class,
             DuplicateKeyException.class,
-            DataIntegrityViolationException.class,
             DataAccessException.class,
             Exception.class
     })
@@ -40,15 +38,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
             return badRequest(getExceptionName(e), e.getMessage());
         }
 
-        if (e instanceof DataIntegrityViolationException) {
-            return badRequest(getExceptionName(e), getMostSpecificMessage(e));
-        }
-
         if (e instanceof DataAccessException) {
-            return badRequest(getExceptionName(e), getMostSpecificMessage(e));
+            return badRequest(getMostSpecificName(e), getMostSpecificMessage(e));
         }
 
-        return badRequest(getExceptionName(e), getMostSpecificMessage(e));
+        return badRequest(getMostSpecificName(e), getMostSpecificMessage(e));
     }
 
     @Override
@@ -58,8 +52,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         globalErrors.forEach(error -> messages.append(error.getDefaultMessage()).append(";"));
         List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
         fieldErrors.forEach(error -> messages.append(error.getField()).append(" ").append(error.getDefaultMessage()).append(";"));
-        ErrorMessage errorMessage = new ErrorMessage(getExceptionName(ex), messages.toString());
-        return badRequest(errorMessage);
+        return badRequest(getExceptionName(ex), messages.toString());
     }
 
     @Override
@@ -67,12 +60,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return new ResponseEntity<>(new ErrorMessage(getExceptionName(ex), ex.getMessage()), headers, status);
     }
 
-    private ResponseEntity<Object> badRequest(ErrorMessage errorMessage) {
-        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
-    }
-
     private ResponseEntity<Object> badRequest(String error, String message) {
-        return badRequest(new ErrorMessage(error, message));
+        return new ResponseEntity<>(new ErrorMessage(error, message), HttpStatus.BAD_REQUEST);
     }
 
     private ResponseEntity<Object> notFound(String error, String message) {
@@ -81,6 +70,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     private String getExceptionName(Exception e) {
         return e.getClass().getSimpleName();
+    }
+
+    private String getMostSpecificName(Exception e) {
+        return getMostSpecificCause(e).getClass().getSimpleName();
     }
 
     private String getMostSpecificMessage(Exception e) {
