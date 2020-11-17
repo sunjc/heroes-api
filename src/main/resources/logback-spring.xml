@@ -2,12 +2,12 @@
 <configuration>
     <springProfile name="dev">
         <property name="LOG_FILE" value="heroes.log"/>
-        <property name="LOG_FILE_MAX_HISTORY" value="2"/>
+        <property name="LOGBACK_ROLLINGPOLICY_MAX_HISTORY" value="2"/>
         <property name="AUDIT_FILE" value="audit.log"/>
     </springProfile>
     <springProfile name="prod">
         <property name="LOG_FILE" value="/var/log/heroes.log"/>
-        <property name="LOG_FILE_MAX_HISTORY" value="30"/>
+        <property name="LOGBACK_ROLLINGPOLICY_MAX_HISTORY" value="30"/>
         <property name="AUDIT_FILE" value="/var/log/audit.log"/>
     </springProfile>
 

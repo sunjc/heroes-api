@@ -9,8 +9,6 @@ spring:
   messages:
     encoding: UTF-8
     basename: messages
-  resources:
-    add-mappings: true
 
 management:
   server:
@@ -31,19 +29,20 @@ info:
     version: 1.0
     encoding: @project.build.sourceEncoding@
     java:
-     source: @java.version@
-     target: @java.version@
+      source: @java.version@
+      target: @java.version@
 
 springfox:
   documentation:
+    enabled: true
+    open-api:
+      enabled: true
     swagger:
-      v2:
-        path: /api-docs
       title: Api Documentation
       description: Api Documentation
       version: 1.0
       base-package: org.itrunner.heroes.controller
-      api-path: /api/.*
+      api-path: /api/
       contact:
         name: Jason
         url: http://blog.51cto.com/7308310
@@ -53,7 +52,7 @@ api:
   base-path: /api
 
 security:
-  ignore-paths: /api-docs,/swagger-resources/**,/swagger-ui.html**,/webjars/**
+  ignore-paths: /v3/api-docs,/swagger-resources/**,/swagger-ui/**,/webjars/**
   auth-path: /api/auth
   cors:
     allowed-origins: "*"

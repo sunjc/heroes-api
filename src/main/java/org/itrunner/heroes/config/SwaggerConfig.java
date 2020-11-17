@@ -9,18 +9,18 @@ import org.springframework.http.ResponseEntity;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.oas.annotations.EnableOpenApi;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
+import static java.util.List.of;
 
-@EnableSwagger2
+@EnableOpenApi
 @Configuration
 public class SwaggerConfig {
 
@@ -33,7 +33,7 @@ public class SwaggerConfig {
 
     @Bean
     public Docket petApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
+        return new Docket(DocumentationType.OAS_30)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage(properties.getBasePackage()))
                 .paths(PathSelectors.any())
@@ -44,8 +44,8 @@ public class SwaggerConfig {
                 .genericModelSubstitutes(ResponseEntity.class)
                 .additionalModels(new TypeResolver().resolve(ErrorMessage.class))
                 .useDefaultResponseMessages(false)
-                .securitySchemes(newArrayList(apiKey()))
-                .securityContexts(newArrayList(securityContext()))
+                .securitySchemes(of(authenticationScheme()))
+                .securityContexts(of(securityContext()))
                 .enableUrlTemplating(false);
     }
 
@@ -58,14 +58,16 @@ public class SwaggerConfig {
                 .build();
     }
 
-    private ApiKey apiKey() {
-        return new ApiKey("BearerToken", "Authorization", "header");
+    private HttpAuthenticationScheme authenticationScheme() {
+        return HttpAuthenticationScheme.JWT_BEARER_BUILDER.name("BearerToken").build();
     }
 
     private SecurityContext securityContext() {
         return SecurityContext.builder()
                 .securityReferences(defaultAuth())
-                .forPaths(PathSelectors.regex(properties.getApiPath()))
+                .operationSelector(operationContext ->
+                        operationContext.requestMappingPattern().startsWith(properties.getApiPath())
+                )
                 .build();
     }
 
@@ -73,6 +75,6 @@ public class SwaggerConfig {
         AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
-        return newArrayList(new SecurityReference("BearerToken", authorizationScopes));
+        return of(new SecurityReference("BearerToken", authorizationScopes));
     }
 }
