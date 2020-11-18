@@ -2,6 +2,7 @@ package org.itrunner.heroes.util;
 
 import org.itrunner.heroes.config.SecurityProperties;
 import org.itrunner.heroes.service.JwtService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -20,9 +21,11 @@ public class JwtServiceTest {
     @InjectMocks
     private JwtService jwtService;
 
+    private AutoCloseable autoCloseable;
+
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        autoCloseable = MockitoAnnotations.openMocks(this);
 
         SecurityProperties.Jwt jwtConfig = new SecurityProperties.Jwt();
         jwtConfig.setIssuer("ITRunner");
@@ -30,6 +33,11 @@ public class JwtServiceTest {
         jwtConfig.setExpiration(7200L);
 
         given(securityProperties.getJwt()).willReturn(jwtConfig);
+    }
+
+    @AfterEach
+    public void release() throws Exception {
+        autoCloseable.close();
     }
 
     @Test
