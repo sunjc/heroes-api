@@ -9,6 +9,8 @@ spring:
   messages:
     encoding: UTF-8
     basename: messages
+  jpa:
+    open-in-view: false
 
 management:
   server:
