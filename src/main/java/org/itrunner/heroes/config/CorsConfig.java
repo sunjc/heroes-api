@@ -17,6 +17,7 @@ public class CorsConfig {
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         SecurityProperties.Cors cors = securityProperties.getCors();
+
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
