@@ -1,10 +1,10 @@
 package org.itrunner.heroes.exception;
 
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DuplicateKeyException;
+import org.itrunner.heroes.util.Messages;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -20,26 +20,26 @@ import static org.springframework.core.NestedExceptionUtils.getMostSpecificCause
 
 @ControllerAdvice(basePackages = {"org.itrunner.heroes.controller"})
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+    private final Messages messages;
+
+    public RestResponseEntityExceptionHandler(Messages messages) {
+        this.messages = messages;
+    }
 
     @ExceptionHandler({
             EntityNotFoundException.class,
-            DuplicateKeyException.class,
-            DataAccessException.class,
+            BadCredentialsException.class,
             Exception.class
     })
     public final ResponseEntity<Object> handleAllException(Exception e) {
         logger.error(e.getMessage(), e);
 
         if (e instanceof EntityNotFoundException) {
-            return notFound(getExceptionName(e), e.getMessage());
+            return notFound(getExceptionName(e), messages.getMessage("error.entityNotFound"));
         }
 
-        if (e instanceof DuplicateKeyException) {
-            return badRequest(getExceptionName(e), e.getMessage());
-        }
-
-        if (e instanceof DataAccessException) {
-            return badRequest(getMostSpecificName(e), getMostSpecificMessage(e));
+        if (e instanceof BadCredentialsException) {
+            return unauthorized(getExceptionName(e), messages.getMessage("error.badCredentials"));
         }
 
         return badRequest(getMostSpecificName(e), getMostSpecificMessage(e));
@@ -66,6 +66,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     private ResponseEntity<Object> notFound(String error, String message) {
         return new ResponseEntity(new ErrorMessage(error, message), HttpStatus.NOT_FOUND);
+    }
+
+    private ResponseEntity<Object> unauthorized(String error, String message) {
+        return new ResponseEntity<>(new ErrorMessage(error, message), HttpStatus.UNAUTHORIZED);
     }
 
     private String getExceptionName(Exception e) {
