@@ -54,8 +54,7 @@ api:
   base-path: /api
 
 security:
-  ignore-paths: /v3/api-docs,/swagger-resources/**,/swagger-ui/**,/webjars/**
-  auth-path: /api/auth
+  ignore-paths: /api/auth,/v3/api-docs,/swagger-resources/**,/swagger-ui/**,/webjars/**
   cors:
     allowed-origins: "*"
     allowed-methods: GET,POST,DELETE,PUT,OPTIONS
