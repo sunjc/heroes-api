@@ -23,4 +23,10 @@ public class ErrorMessage {
         this.error = error;
         this.message = message;
     }
+
+    public ErrorMessage(Exception e) {
+        this();
+        this.error = e.getClass().getSimpleName();
+        this.message = e.getMessage();
+    }
 }

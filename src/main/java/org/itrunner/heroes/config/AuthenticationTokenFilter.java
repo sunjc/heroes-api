@@ -42,6 +42,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
                 }
             } catch (Exception e) {
                 logger.error(e);
+                request.setAttribute("exception", e);
             }
         }
 
