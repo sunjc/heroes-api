@@ -14,7 +14,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.4</version>
+        <version>2.5.2</version>
         <relativePath/>
     </parent>
 
@@ -26,7 +26,7 @@
         <swagger.version>3.0.0</swagger.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <jasypt.version>3.0.3</jasypt.version>
-        <jwt.version>3.15.0</jwt.version>
+        <jwt.version>3.18.1</jwt.version>
     </properties>
 
     <profiles>
