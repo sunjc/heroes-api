@@ -1,14 +1,17 @@
 spring:
   jpa:
+    database: h2
+    defer-datasource-initialization: true
     hibernate:
       ddl-auto: create-drop
     properties:
       hibernate:
         format_sql: true
     show-sql: true
-  datasource:
-    platform: h2
-    initialization-mode: always
+  sql:
+    init:
+      mode: always
+      platform: h2
 server:
   port: 8080
 security:

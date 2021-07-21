@@ -1,6 +1,6 @@
 spring:
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database: postgresql
     hibernate:
       ddl-auto: update
     properties:
@@ -12,12 +12,14 @@ spring:
             non_contextual_creation: true
     show-sql: true
   datasource:
-    platform: postgresql
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/postgres
     username: hero
     password: ENC(LL8xHWiEdH52yho0ADQ9/h5RsOa3txOFs+GcLtcdrLa2ke4JJ9UpZbKF/r13BIz3)
-    initialization-mode: never
+  sql:
+    init:
+      mode: never
+      platform: postgresql
 server:
   port: 8000
 security:

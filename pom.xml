@@ -23,10 +23,10 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.profile>dev</project.profile>
         <java.version>11</java.version>
-        <swagger.version>3.0.0</swagger.version>
-        <mapstruct.version>1.4.2.Final</mapstruct.version>
-        <jasypt.version>3.0.3</jasypt.version>
         <jwt.version>3.18.1</jwt.version>
+        <mapstruct.version>1.4.2.Final</mapstruct.version>
+        <swagger.version>3.0.0</swagger.version>
+        <jasypt.version>3.0.3</jasypt.version>
     </properties>
 
     <profiles>
@@ -94,13 +94,13 @@
             <artifactId>java-jwt</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

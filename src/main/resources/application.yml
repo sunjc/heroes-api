@@ -2,7 +2,7 @@ spring:
   profiles:
     active: @project.profile@
   banner:
-    charset: utf-8
+    charset: UTF-8
     image:
       location: classpath:banner.jpg
     location: classpath:banner.txt
