@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(properties = "spring.datasource.initialization-mode=never")
+@SpringBootTest(properties = "spring.sql.init.mode=never")
 @AutoConfigureMockMvc
 class HeroControllerTest {
     @Autowired
