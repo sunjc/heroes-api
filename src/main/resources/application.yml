@@ -27,34 +27,35 @@ management:
       show-components: always
 info:
   app:
-    name: heroes
-    version: 1.0
+    name: @project.name@
+    version: @project.version@
     encoding: @project.build.sourceEncoding@
     java:
       source: @java.version@
       target: @java.version@
 
-springfox:
-  documentation:
+springdoc:
+  api-docs:
     enabled: true
-    open-api:
-      enabled: true
-    swagger:
-      title: Api Documentation
-      description: Api Documentation
-      version: 1.0
-      base-package: org.itrunner.heroes.controller
-      api-path: /api/
-      contact:
-        name: Jason
-        url: http://blog.51cto.com/7308310
-        email: sjc-925@163.com
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+  packagesToScan: org.itrunner.heroes.controller
+  info:
+    title: Heroes API
+    description: "This is a demo project for Spring Boot. You can find out more about Swagger at [http://swagger.io](http://swagger.io)."
+    terms-of-service: http://swagger.io/terms/
+    version: @project.version@
+    contact:
+      name: Jason
+      url: http://blog.51cto.com/7308310
+      email: sjc-925@163.com
 
 api:
   base-path: /api
 
 security:
-  ignore-paths: /api/auth,/v3/api-docs,/swagger-resources/**,/swagger-ui/**,/webjars/**
+  ignore-paths: /api/auth,/swagger-ui.html,/swagger-ui/**,/v3/api-docs/**
   cors:
     allowed-origins: "*"
     allowed-methods: GET,POST,DELETE,PUT,OPTIONS

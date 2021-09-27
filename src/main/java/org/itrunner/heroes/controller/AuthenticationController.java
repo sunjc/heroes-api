@@ -1,6 +1,6 @@
 package org.itrunner.heroes.controller;
 
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.itrunner.heroes.dto.AuthenticationRequest;
 import org.itrunner.heroes.dto.AuthenticationResponse;
@@ -21,7 +21,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/api/auth", produces = MediaType.APPLICATION_JSON_VALUE)
-@Api(tags = {"Authentication Controller"})
+@Tag(name = "Authentication Controller")
 @Slf4j
 public class AuthenticationController {
     private final AuthenticationManager authenticationManager;

@@ -8,14 +8,13 @@ import org.springframework.stereotype.Component;
 @Component
 @Getter
 @Setter
-@ConfigurationProperties(prefix = "springfox.documentation.swagger")
-public class SwaggerProperties {
+@ConfigurationProperties(prefix = "springdoc.info")
+public class SpringDocInfo {
     private String title;
     private String description;
-    private String version;
-    private String basePackage;
-    private String apiPath;
+    private String termsOfService;
     private Contact contact;
+    private String version;
 
     @Getter
     @Setter

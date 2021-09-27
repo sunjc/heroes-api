@@ -1,6 +1,6 @@
 package org.itrunner.heroes.dto;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,11 +9,11 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 public class AuthenticationRequest {
-    @ApiModelProperty(value = "username", example = "admin", required = true)
+    @Schema(name = "username", example = "admin", required = true)
     @NotNull
     private String username;
 
-    @ApiModelProperty(value = "password", example = "admin", required = true)
+    @Schema(name = "password", example = "admin", required = true)
     @NotNull
     private String password;
 }
