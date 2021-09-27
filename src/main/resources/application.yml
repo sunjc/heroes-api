@@ -48,7 +48,7 @@ springdoc:
     version: @project.version@
     contact:
       name: Jason
-      url: http://blog.51cto.com/7308310
+      url: http://blog.51cto.com/itrunner
       email: sjc-925@163.com
 
 api:
