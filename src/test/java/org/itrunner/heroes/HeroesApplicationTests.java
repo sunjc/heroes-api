@@ -48,9 +48,10 @@ class HeroesApplicationTests {
     void loginFailure() {
         AuthenticationRequest request = new AuthenticationRequest();
         request.setUsername("admin");
-        request.setPassword("111111");
-        int statusCode = restTemplate.postForEntity("/api/auth", request, HttpEntity.class).getStatusCodeValue();
-        assertThat(statusCode).isEqualTo(403);
+        request.setPassword("wrong-password");
+        ResponseEntity<ErrorMessage> responseEntity = restTemplate.postForEntity("/api/auth", request, ErrorMessage.class);
+        assertThat(responseEntity.getStatusCodeValue()).isEqualTo(400);
+        assertThat(responseEntity.getBody().getError()).isEqualTo("BadCredentialsException");
     }
 
     @Test

@@ -39,7 +39,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         }
 
         if (e instanceof BadCredentialsException) {
-            return unauthorized(getExceptionName(e), messages.getMessage("error.badCredentials"));
+            return badRequest(getExceptionName(e), messages.getMessage("error.badCredentials"));
         }
 
         return badRequest(getMostSpecificName(e), getMostSpecificMessage(e));
@@ -66,10 +66,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     private ResponseEntity<Object> notFound(String error, String message) {
         return new ResponseEntity(new ErrorMessage(error, message), HttpStatus.NOT_FOUND);
-    }
-
-    private ResponseEntity<Object> unauthorized(String error, String message) {
-        return new ResponseEntity<>(new ErrorMessage(error, message), HttpStatus.UNAUTHORIZED);
     }
 
     private String getExceptionName(Exception e) {
