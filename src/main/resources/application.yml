@@ -27,7 +27,7 @@ management:
       show-components: always
 info:
   app:
-    name: @project.name@
+    name: heroes
     version: @project.version@
     encoding: @project.build.sourceEncoding@
     java:
@@ -39,6 +39,9 @@ springdoc:
     enabled: true
   swagger-ui:
     enabled: true
+    disable-swagger-default-url: true
+    display-request-duration: true
+    operationsSorter: method
     path: /swagger-ui.html
   packagesToScan: org.itrunner.heroes.controller
   info:
@@ -61,7 +64,6 @@ security:
     allowed-methods: GET,POST,DELETE,PUT,OPTIONS
     allowed-headers: Accept,Accept-Encoding,Accept-Language,Authorization,Connection,Content-Type,Host,Origin,Referer,User-Agent,X-Requested-With
   jwt:
-    header: Authorization
     secret: mySecret
     expiration: 7200
     issuer: iTRunner
