@@ -20,32 +20,36 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
     @Autowired
     private JwtService jwtService;
 
-    @Autowired
-    private SecurityProperties securityProperties;
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        String authToken = request.getHeader(securityProperties.getJwt().getHeader());
+        String authorizationHeader = request.getHeader("Authorization");
 
-        if (authToken != null && authToken.startsWith("Bearer ")) {
-            authToken = authToken.substring(7);
+        if (isInvalidHeader(authorizationHeader)) {
+            chain.doFilter(request, response);
+            return;
+        }
 
-            try {
-                UserDetails user = jwtService.verify(authToken);
+        String authToken = authorizationHeader.substring(7);
 
-                if (SecurityContextHolder.getContext().getAuthentication() == null) {
-                    logger.info("checking authentication for user " + user.getUsername());
+        try {
+            UserDetails user = jwtService.verify(authToken);
 
-                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), "N/A", user.getAuthorities());
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                }
-            } catch (Exception e) {
-                logger.error(e);
-                request.setAttribute("exception", e);
+            if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                logger.debug("checking authentication for user " + user.getUsername());
+
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), "N/A", user.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
+        } catch (Exception e) {
+            logger.error(e);
+            request.setAttribute("exception", e);
         }
 
         chain.doFilter(request, response);
+    }
+
+    private boolean isInvalidHeader(String authorizationHeader) {
+        return authorizationHeader == null || !authorizationHeader.startsWith("Bearer ");
     }
 }
