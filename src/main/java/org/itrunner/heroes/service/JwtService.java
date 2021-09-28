@@ -3,7 +3,6 @@ package org.itrunner.heroes.service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
 import org.itrunner.heroes.config.SecurityProperties;
@@ -43,10 +42,6 @@ public class JwtService {
     }
 
     public UserDetails verify(String token) {
-        if (token == null) {
-            throw new JWTVerificationException("token should not be null");
-        }
-
         Algorithm algorithm = Algorithm.HMAC256(securityProperties.getJwt().getSecret());
         JWTVerifier verifier = JWT.require(algorithm).withIssuer(securityProperties.getJwt().getIssuer()).build();
         DecodedJWT jwt = verifier.verify(token);
