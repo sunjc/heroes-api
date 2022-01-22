@@ -5,7 +5,7 @@
 
     <groupId>org.itrunner</groupId>
     <artifactId>heroes-api</artifactId>
-    <version>2.5.5</version>
+    <version>2.6.3</version>
     <packaging>jar</packaging>
 
     <name>heroes</name>
@@ -14,7 +14,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.5</version>
+        <version>2.6.3</version>
         <relativePath/>
     </parent>
 
@@ -23,9 +23,9 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.profile>dev</project.profile>
         <java.version>11</java.version>
-        <jwt.version>3.18.2</jwt.version>
+        <jwt.version>3.18.3</jwt.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
-        <springdoc.version>1.5.10</springdoc.version>
+        <springdoc.version>1.6.4</springdoc.version>
         <jasypt.version>3.0.4</jasypt.version>
     </properties>
 
